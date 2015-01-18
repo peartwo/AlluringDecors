@@ -51,7 +51,23 @@
         </script>
     </head>
     <body>
+        <%
+            if (session.getAttribute("userRole") != null) {
+                if (session.getAttribute("userRole").equals("client")) {
+        %>
+        <jsp:include page="/WEB-INF/jspf/clientnavigation.jspf"/>
+        <%
+            } else if (session.getAttribute("userRole").equals("admin")) {
+        %>
+        <jsp:include page="/WEB-INF/jspf/adminnavigation.jspf"/>
+        <%
+            }
+            } else {
+        %>
         <jsp:include page="/WEB-INF/jspf/defaultnavigation.jspf"/>
+        <%
+            }
+        %>
         <div class="container" id="domains">
             <div class="row">
                 <jsp:include page="DisplayDomains" flush="true" />

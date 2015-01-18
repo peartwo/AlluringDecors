@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.ServiceDomain;
 import session_beans.ServiceDomainFacade;
 
@@ -24,7 +25,7 @@ public class DisplayDomains extends HttpServlet {
 
     @EJB
     private ServiceDomainFacade domainObj;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,14 +38,25 @@ public class DisplayDomains extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<ServiceDomain> domains = domainObj.findAll();
-
+        HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
             for (ServiceDomain sd : domains) {
                 out.println("<div class=\"col-md-6 domainbox\" id=" + sd.getIdServiceDomain() + " >");
+                // If current user is admin display buttons to update or delete domain
+                if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
+                    out.println("<button id=" + sd.getIdServiceDomain() + "-update\" class=\"btn btn-default pull-right\"><span class=\"fa fa-edit\">Edit</span></button>"
+                            + "<button id=" + sd.getIdServiceDomain() + "-delete\" class=\"btn btn-danger pull-right\"><span class=\"fa fa-minus-square\">Delete</span></button>");
+                }
                 out.println("<h3>" + sd.getName() + "</h3>");
                 out.println("<center><img src=\"images/domains/" + sd.getIdServiceDomain() + ".jpg\" alt=" + sd.getName() + " class=\"img-circle\" /></center>");
+                out.println("</div>");
+            }
+            // If current user is admin display a button to add new domain
+            if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
+                out.println("<div class=\"col-md-6 domainbox\">");
+                out.println("<button id=\"addService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Domain</span></button>");
                 out.println("</div>");
             }
         }

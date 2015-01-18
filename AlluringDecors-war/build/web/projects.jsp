@@ -29,9 +29,30 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     </head>
     <body>
+        <%
+            if (session.getAttribute("userRole") != null) {
+                if (session.getAttribute("userRole").equals("client")) {
+        %>
+        <jsp:include page="/WEB-INF/jspf/clientnavigation.jspf"/>
+        <%
+        } else if (session.getAttribute("userRole").equals("admin")) {
+        %>
+        <jsp:include page="/WEB-INF/jspf/adminnavigation.jspf"/>
+        <%
+        }
+        } else {
+        %>
         <jsp:include page="/WEB-INF/jspf/defaultnavigation.jspf"/>
+        <%
+            }
+        %>
 
         <div class="container" id="projects">
             <div class="row">
@@ -54,10 +75,5 @@
                 </a>
             </div>
         </div>
-
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     </body>
 </html>

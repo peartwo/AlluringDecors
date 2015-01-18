@@ -6,7 +6,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
@@ -39,6 +38,7 @@ public class VerifyLogin extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session;
         Boolean loginValid = false;
         HashMap currentUser = new HashMap();
         String username = request.getParameter("username");
@@ -49,30 +49,31 @@ public class VerifyLogin extends HttpServlet {
         for (User user : allUsers) {
             if(user.getEmail().equals(username)) {
                 if(user.getPassword().equals(password)) {
-                    System.out.println("user authenticated");
+                    //System.out.println("user authenticated");
                     loginValid = true;
                     currentUser.put("id", user.getIdUser());
                     currentUser.put("user_type", user.getUserType());
                     currentUser.put("email", user.getEmail());
                     currentUser.put("name", user.getFirstname());
-                    System.out.println(currentUser.get("name"));
-                    
+                    //System.out.println(currentUser.get("name"));                   
                 }
             }
         }
         if((loginValid==true) && (currentUser.get("user_type").equals("admin"))) {
-            HttpSession session = request.getSession(true);
-            session.setMaxInactiveInterval(900);
+            session = request.getSession(true);
+            session.setMaxInactiveInterval(15 * 60);
             session.setAttribute("userRole", "admin");
             session.setAttribute("name", currentUser.get("name"));
             response.sendRedirect(".");
         } else if((loginValid==true) && (currentUser.get("user_type").equals("client"))) {
-            HttpSession session = request.getSession(true);
-            session.setMaxInactiveInterval(900);
+            session = request.getSession(true);
+            session.setMaxInactiveInterval(15 * 60);
             session.setAttribute("userRole", "client");
             session.setAttribute("name", currentUser.get("name"));
             response.sendRedirect(".");
         } else {
+            session = request.getSession(true);
+            session.setAttribute("errorMessage", "Login credentials are incorrect");
             response.sendRedirect(".");
         }
     }

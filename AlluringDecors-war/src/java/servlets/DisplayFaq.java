@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Faq;
 import session_beans.FaqFacade;
 
@@ -21,10 +22,10 @@ import session_beans.FaqFacade;
  * @author zuzanahruskova
  */
 public class DisplayFaq extends HttpServlet {
-    
+
     @EJB
     private FaqFacade faqObj;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,19 +38,41 @@ public class DisplayFaq extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Faq> faq = faqObj.findAll();
-
+        HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            for (Faq f : faq) {
-                out.println("<strong class=\"question\">" + f.getQuestion() + "</strong>");
-                if(f.getAnswer() != null) {
-                out.println("<p class=\"answer\">" + f.getAnswer() + "</p>");
-                } else {
-                out.println("<p class=\"answer\">Answer not provided.</p>");
+
+        if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
+            try (PrintWriter out = response.getWriter()) {
+                out.println("<div class=\"col-md-6 controls\">");
+                out.println("<a href=\"ManageFaq?id=0&action=insert\"><span class=\"fa fa-plus-square\">Add new Question & Answer</span></a><br /><br />");
+                out.println("</div>");
+                for (Faq f : faq) {
+                    out.println("<center><strong class=\"question\">" + f.getQuestion() + "</strong></center>");
+                    if (f.getAnswer() != null) {
+                        out.println("<p class=\"answer\">" + f.getAnswer() + "</p>");
+                    } else {
+                        out.println("<p class=\"answer\">Answer not provided.</p>");
+                    }
+                    out.println("<div class=\"col-md-6 col-md-offset-6 controls\">");
+                    out.println("<a href=\"ManageFaq?id="+f.getIdFaq()+"&action=update\"><span class=\"fa fa-edit\">Edit Question/Answer</span></a>");
+                    out.println("<a href=\"ManageFaq?id="+f.getIdFaq()+"&action=delete\"><span class=\"fa fa-minus-square\">Delete Question/Answer</span></a><br /><br />");
+                    out.println("</div>");
+                    out.println("<hr>");
                 }
-                out.println("<p class=\"divider\"><span class=\"glyphicon glyphicon-asterisk\"></span></p>");
-            }   
+            }
+        } else {
+            try (PrintWriter out = response.getWriter()) {
+
+                for (Faq f : faq) {
+                    out.println("<strong class=\"question\">" + f.getQuestion() + "</strong>");
+                    if (f.getAnswer() != null) {
+                        out.println("<p class=\"answer\">" + f.getAnswer() + "</p>");
+                    } else {
+                        out.println("<p class=\"answer\">Answer not provided.</p>");
+                    }
+                    out.println("<p class=\"divider\"><span class=\"glyphicon glyphicon-asterisk\"></span></p>");
+                }
+            }
         }
     }
 

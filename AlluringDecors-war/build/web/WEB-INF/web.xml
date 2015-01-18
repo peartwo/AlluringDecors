@@ -28,6 +28,14 @@
         <servlet-name>RegisterNewClient</servlet-name>
         <servlet-class>servlets.RegisterNewClient</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddNewFeedback</servlet-name>
+        <servlet-class>servlets.AddNewFeedback</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadFeedbacks</servlet-name>
+        <servlet-class>servlets.LoadFeedbacks</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VerifyLogin</servlet-name>
         <url-pattern>/VerifyLogin</url-pattern>
@@ -55,6 +63,14 @@
     <servlet-mapping>
         <servlet-name>RegisterNewClient</servlet-name>
         <url-pattern>/RegisterNewClient</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewFeedback</servlet-name>
+        <url-pattern>/AddNewFeedback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadFeedbacks</servlet-name>
+        <url-pattern>/LoadFeedbacks</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

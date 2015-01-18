@@ -43,12 +43,12 @@
         %>
         <jsp:include page="/WEB-INF/jspf/clientnavigation.jspf"/>
         <%
-        } else if (session.getAttribute("userRole").equals("admin")) {
+            } else if (session.getAttribute("userRole").equals("admin")) {
         %>
         <jsp:include page="/WEB-INF/jspf/adminnavigation.jspf"/>
         <%
             }
-        } else {
+            } else {
         %>
         <jsp:include page="/WEB-INF/jspf/defaultnavigation.jspf"/>
         <%
@@ -68,32 +68,32 @@
             </div>
             <div class="row">
 
-                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <div id="carousel-advert" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">
-                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        <li data-target="#carousel-advert" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-advert" data-slide-to="1"></li>
+                        <li data-target="#carousel-advert" data-slide-to="2"></li>
                     </ol>
 
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner">
                         <div class="item active">
-                            <img src="http://placehold.it/1200x315" alt="...">
+                            <img src="images/carousel/home.jpg" alt="home design" class="img-responsive center-block">
                             <div class="carousel-caption">
-                                <h3>We Decorate Your Home</h3>
+                                <h3 class="">Need to Decorate Your Home?</h3>
                             </div>
                         </div>
                         <div class="item">
-                            <img src="http://placehold.it/1200x315" alt="...">
+                            <img src="images/carousel/office.jpg" alt="office design" class="img-responsive center-block">
                             <div class="carousel-caption">
-                                <h3>We Decorate Your Office</h3>
+                                <h3>Need to Decorate Your Office?</h3>
                             </div>
                         </div>
                         <div class="item">
-                            <img src="http://placehold.it/1200x315" alt="...">
+                            <img src="images/carousel/restaurant.jpg" alt="restaurant desing" class="img-responsive center-block">
                             <div class="carousel-caption">
-                                <h3>We Decorate Your Hall or Restaurant</h3>
+                                <h3>Need to Decorate Your Restaurant or Hall?</h3>
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,13 @@
                         <span class="glyphicon glyphicon-chevron-right"></span>
                     </a>
                 </div> <!-- Carousel -->
+                <%
+                    if (session.getAttribute("userRole") == null) {
+                %>
                 <h2><a href="registration.jsp">Register Now</a></h2>
+                <%
+                    }
+                %>
             </div>
         </div>
     </body>

@@ -20,6 +20,7 @@
                 <li><a href="about.jsp" class="testClick">About</a></li>
                 <li><a href="projects.jsp" class="testClick">Projects</a></li>
                 <li><a href="services.jsp" class="testClick">Services Offered</a></li>
+                <li class="list-group-item-danger"><a href="client-orders.jsp" class="testClick">My Service Requests</a></li>
                 <li><a href="contact.jsp" class="testClick">Contact/Feedback</a></li>
                 <li><a href="faq.jsp" class="testClick">FAQ's</a></li>
             </ul>

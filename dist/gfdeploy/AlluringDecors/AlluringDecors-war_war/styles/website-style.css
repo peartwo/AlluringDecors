@@ -26,8 +26,25 @@ h1,h2,h3 {
 .light {
     color: #dedede;
 }
-.advert {
+.responseText {
+    padding-bottom: 10px;
     background-color: silver;
+    border-radius: 10px;
+}
+.feedbackMsg {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid #b84d4d;
+    border-radius: 10px; 
+}
+.feedbackMsg h5 {
+    color: #b84d4d;
+}
+.controls a {
+    color: #cc9900;
+}
+.controls a:hover {
+    color: #3d2e00;
 }
 .info {
     padding-top: 20px;
@@ -70,6 +87,12 @@ h1,h2,h3 {
 }
 .yellowbox:hover	{
     color: #cccccc;
+}
+.yellowbox h3 {
+    height: 50px;
+}
+#addService {
+    width: 100%;
 }
 .greybox {
     padding: 0 40px 50px 40px;
