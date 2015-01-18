@@ -1,0 +1,153 @@
+body {
+    margin: 0 50px;
+    background-color: #121212;
+    font-family: 'Lato', sans-serif;
+}
+h1,h2,h3 {
+    text-align: center;
+}
+#logo {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: #4a4a4a;
+    text-align: center;
+}
+#homeicon {
+    padding: 8px 20px 8px 15px;
+    font-size: 2em;
+}
+.divider {
+    text-align: center;
+}
+.container,
+.topMargin {
+    margin-top: 110px;
+}
+.light {
+    color: #dedede;
+}
+.advert {
+    background-color: silver;
+}
+.info {
+    padding-top: 20px;
+    color: #cccccc;
+    font-size: 1.1em;
+    text-align: justify;
+}
+.address {
+    width: 180px;
+    display: block;
+    margin: 0 auto;
+    color: #cccccc;
+    font-size: 1.1em;
+}
+.question {
+    font-size: 1.2em;
+    color: #b84d4d;
+    text-align: justify;
+}
+.answer {
+    font-size: 1.2em;
+    text-align: justify;
+}
+.redbox {
+    padding: 10px;
+    color: #cccccc;
+    background-color: #990000;
+    border: 3px solid #121212;
+    border-radius: 10px;
+}
+.redbox:hover	{
+    color: white;
+}
+.yellowbox {
+    padding: 10px;
+    color: #3d2e00;
+    background-color: #cc9900;
+    border: 3px solid #121212;
+    border-radius: 10px;
+}
+.yellowbox:hover	{
+    color: #cccccc;
+}
+.greybox {
+    padding: 0 40px 50px 40px;
+    background-color: #dedede;
+    border-radius: 10px;
+}
+.domainbox {
+    padding: 10px;
+    color: #3d2e00;
+    background-color: olive;
+    border: 3px solid #121212;
+    border-radius: 10px;
+}
+.domainbox:hover {
+    color: #cccccc;
+}
+.domainbox img {
+    margin: 20px;
+    width: 50%;
+}
+
+/* Customizing Navbar */
+.navbar {
+    border: 1px solid grey;
+}
+.navbar-default .navbar-brand {
+    color: #990000;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #990000;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #990000;
+}
+.navbar-default .navbar-form {
+    border-color: #990000;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: yellow;
+    background-color: #333333;
+}
+.navbar li {
+    font-size: 1.1em;
+}
+.navbar li:hover {
+    background-color: #cf8888;
+}
+
+/* Form Style */
+.header {
+    color: #b84d4d;
+    font-size: 27px;
+    padding: 10px;
+}
+
+.bigicon {
+    font-size: 35px;
+    color: #b84d4d;
+}
+#formbutton {
+    width: 100%;
+}
+
+/* Google Map Style */
+.flexibleContainer {
+    position: relative;
+    padding-bottom: 100%;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+}
+.flexibleContainer iframe,
+.flexibleContainer object,
+.flexibleContainer embed {
+    position: absolute;
+    top: 20px; left: 0;
+    width: 100%;
+    height: 100%;
+}
