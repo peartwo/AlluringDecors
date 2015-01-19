@@ -41,10 +41,13 @@ h1,h2,h3 {
     color: #b84d4d;
 }
 .controls a {
-    color: #cc9900;
+    color: #4a4a4a;
 }
 .controls a:hover {
     color: #3d2e00;
+}
+#addNewFaq {
+    margin-left: 50px;
 }
 .info {
     padding-top: 20px;

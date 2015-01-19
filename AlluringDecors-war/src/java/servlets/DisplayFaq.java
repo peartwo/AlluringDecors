@@ -43,19 +43,21 @@ public class DisplayFaq extends HttpServlet {
 
         if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
             try (PrintWriter out = response.getWriter()) {
-                out.println("<div class=\"col-md-6 controls\">");
-                out.println("<a href=\"ManageFaq?id=0&action=insert\"><span class=\"fa fa-plus-square\">Add new Question & Answer</span></a><br /><br />");
+                out.println("<div id=\"addNewFaq\" class=\"row controls\">");
+                out.println("<button class=\"btn btn-xs btn-success showform\"><span class=\"fa fa-plus-square\">Add new Question & Answer</span></button><br /><br />");
                 out.println("</div>");
                 for (Faq f : faq) {
-                    out.println("<center><strong class=\"question\">" + f.getQuestion() + "</strong></center>");
+                    out.println("<div id=\"faqForm" + f.getIdFaq()+ "\" class=\"row\">");
+                    out.println("<strong id=\"q" + f.getIdFaq()+ "\" class=\"question\">" + f.getQuestion() + "</strong>");
                     if (f.getAnswer() != null) {
-                        out.println("<p class=\"answer\">" + f.getAnswer() + "</p>");
+                        out.println("<p id=\"a" + f.getIdFaq()+ "\" class=\"answer\">" + f.getAnswer() + "</p>");
                     } else {
-                        out.println("<p class=\"answer\">Answer not provided.</p>");
+                        out.println("<p id=\"a" + f.getIdFaq()+ "\" class=\"answer\">Answer not provided.</p>");
                     }
                     out.println("<div class=\"col-md-6 col-md-offset-6 controls\">");
-                    out.println("<a href=\"ManageFaq?id="+f.getIdFaq()+"&action=update\"><span class=\"fa fa-edit\">Edit Question/Answer</span></a>");
-                    out.println("<a href=\"ManageFaq?id="+f.getIdFaq()+"&action=delete\"><span class=\"fa fa-minus-square\">Delete Question/Answer</span></a><br /><br />");
+                    out.println("<button id=" + f.getIdFaq()+ " class=\"btn btn-xs btn-default edit\"><span class=\"fa fa-edit\">Edit Question/Answer</span></button>");
+                    out.println("<button id=" + f.getIdFaq()+ " class=\"btn btn-xs btn-danger delete\"><span class=\"fa fa-minus-square\">Delete Question/Answer</span></button>");
+                    out.println("</div>");
                     out.println("</div>");
                     out.println("<hr>");
                 }

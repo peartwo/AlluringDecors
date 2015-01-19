@@ -36,6 +36,10 @@
         <servlet-name>LoadFeedbacks</servlet-name>
         <servlet-class>servlets.LoadFeedbacks</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageFaq</servlet-name>
+        <servlet-class>servlets.ManageFaq</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VerifyLogin</servlet-name>
         <url-pattern>/VerifyLogin</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>LoadFeedbacks</servlet-name>
         <url-pattern>/LoadFeedbacks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageFaq</servlet-name>
+        <url-pattern>/ManageFaq</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

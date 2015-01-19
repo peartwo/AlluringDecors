@@ -5,6 +5,7 @@
  */
 package session_beans;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +27,11 @@ public class FaqFacade extends AbstractFacade<Faq> {
 
     public FaqFacade() {
         super(Faq.class);
+    }
+
+    public Faq findByQuestion(String question) {
+        List<Faq> allfaq = (List<Faq>) em.createNamedQuery("Faq.findByQuestion", Faq.class).setParameter("question", question).getResultList();
+        return allfaq.isEmpty() ? null : allfaq.get(0);
     }
     
 }
