@@ -30,15 +30,18 @@ public class Logout extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        HttpSession session = request.getSession();
-        String name = session.getAttribute("name").toString();
-        session.invalidate();
 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        out.println("<html><script type=\"text/javascript\">alert('Thank you for visiting our page, " + name + " . You have logged out successfully.');window.location='index.jsp'</script></html>");
         
+        if (request.getSession() != null) {
+            HttpSession session = request.getSession();
+            String name = session.getAttribute("name").toString();
+            session.invalidate();
+            out.println("<html><script type=\"text/javascript\">alert('Thank you for visiting our page, " + name + " . You have logged out successfully.');window.location='index.jsp'</script></html>");
+        } else {
+            out.println("<html><script type=\"text/javascript\">alert('Session expired.');window.location='index.jsp'</script></html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
