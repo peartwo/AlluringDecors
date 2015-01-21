@@ -40,6 +40,10 @@
         <servlet-name>ManageFaq</servlet-name>
         <servlet-class>servlets.ManageFaq</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DisplayUsers</servlet-name>
+        <servlet-class>servlets.DisplayUsers</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VerifyLogin</servlet-name>
         <url-pattern>/VerifyLogin</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>ManageFaq</servlet-name>
         <url-pattern>/ManageFaq</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisplayUsers</servlet-name>
+        <url-pattern>/DisplayUsers</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -34,13 +34,32 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-        
+
         <script>
             jQuery.fn.reset = function () {
                 $(this).each(function () {
                     this.reset();
                 });
             };
+            $(document).on("click", "#goToUsers", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "DisplayUsers",
+                    success: function (result) {
+                        $("#displayUsersSection").html(result);
+                        $("#userRegistrationSection").css("display", "none");
+                        $("#displayUsersSection").css("display", "block");
+                    },
+                    error: function () {
+                        alert("Error loading user information.");
+                    }
+                });
+            });
+            $(document).on("click", ".goBack", function () {
+                $("#displayUsersSection").css("display", "none");
+                $("#userRegistrationSection").css("display", "block");
+            });
+
             // Register New Client when Register Client button is clicked
             $(document).on("click", "#registerClient", function (e) {
                 e.preventDefault();
@@ -52,15 +71,16 @@
                     data: form.serialize(),
                     success: function (result) {
                         $("#clientRegistrationResult").html(result);
+
                     },
                     error: function () {
                         $("#clientRegistrationResult").html("<h3>Error registering new user.<h3>");
                     }
                 });
                 form.reset();
-                $("#adminRegistrationResult").css("display","none");
-                $("#clientRegistrationResult").css("display","block");
-            }); 
+                $("#adminRegistrationResult").css("display", "none");
+                $("#clientRegistrationResult").css("display", "block");
+            });
             // Register New Admin when Register Admin button is clicked
             $(document).on("click", "#registerAdmin", function (e) {
                 e.preventDefault();
@@ -78,10 +98,52 @@
                     }
                 });
                 form.reset();
-                $("#clientRegistrationResult").css("display","none");
-                $("#adminRegistrationResult").css("display","block");
+                $("#clientRegistrationResult").css("display", "none");
+                $("#adminRegistrationResult").css("display", "block");
             });
-            
+
+            $(document).on("click", ".edit", function () {
+                var id = $(this).attr("id");
+                var role = $("#role" + id).text();
+                $("#user" + id).removeClass("col-md-4");
+                $("#user" + id).addClass("col-md-8");
+                $("#email" + id).html("<div class='col-md-6 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#email" + id).text() + "'></div>");
+                $("#role" + id).html("<div class='col-md-6 form-group has-warning'><input type=\"text\" class='form-control' value='" + role + "' disabled></div>");
+                $("#fname" + id).html("<div class='col-md-6 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#fname" + id).text() + "'></div>");
+                $("#lname" + id).html("<div class='col-md-6 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#lname" + id).text() + "'></div>");
+                // Check if user is client
+                if (role === "client") {
+                    $("#label1-" + id).html("<div class='col-md-2 form-group has-warning'>" + $("#label1-" + id).text() + "</div>");
+                    $("#address" + id).html("<div class='col-md-7 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#address" + id).text() + "'></div>");
+                    $("#nr" + id).html("<div class='col-md-3 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#nr" + id).text() + "'></div>");
+                    $("#city" + id).html("<div class='col-md-7 col-md-offset-2 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#city" + id).text() + "'></div>");
+                    $("#zip" + id).html("<div class='col-md-3 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#zip" + id).text() + "'></div>");
+                    $("#label2-" + id).html("<div class='col-md-2 form-group has-warning'>" + $("#label2-" + id).text() + "</div>");
+                    $("#phone" + id).html("<div class='col-md-6 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#phone" + id).text() + "'></div>");
+                }
+                $(this).text("Apply Change");
+                $(this).removeClass('edit');
+                $(this).addClass('apply');
+            });
+
+            $(document).on("click", ".apply", function () {
+                var id = $(this).attr("id");
+                var email = $("#email" + id + " input").val();
+                var role = $("#role" + id + " input").val();
+                var fname = $("#fname" + id + " input").val();
+                var lname = $("#lname" + id + " input").val();
+
+                if (role === "client") {
+                    var street = $("#address" + id + " input").val();
+                    var nr = $("#nr" + id + " input").val();
+                    var city = $("#city" + id + " input").val();
+                    var zip = $("#zip" + id + " input").val();
+                    var phone = $("#phone" + id + " input").val();
+                    alert("Call servlet for User id " + id + ", Email: " + email + ", Role: " + role + ", Name: " + fname + " " + lname + ", Address: " + street + " " + nr + ", " + city + " - " + zip + ", Phone: " + phone);
+                } else {
+                    alert("Call servlet for User id " + id + ", Email: " + email + ", Role: " + role + ", Name: " + fname + " " + lname);
+                }
+            });
         </script>
     </head>
 
@@ -92,12 +154,12 @@
         %>
         <jsp:include page="/WEB-INF/jspf/clientnavigation.jspf"/>
         <%
-            } else if (session.getAttribute("userRole").equals("admin")) {
+        } else if (session.getAttribute("userRole").equals("admin")) {
         %>
         <jsp:include page="/WEB-INF/jspf/adminnavigation.jspf"/>
         <%
             }
-            } else {
+        } else {
         %>
         <jsp:include page="/WEB-INF/jspf/defaultnavigation.jspf"/>
         <%
@@ -141,7 +203,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                
+
                                 <div class="col-md-8 col-md-offset-2">
                                     <input name="lname" type="text" placeholder="Last Name" class="form-control">
                                 </div>
@@ -221,7 +283,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                
+
                                 <div class="col-md-9 col-md-offset-2">
                                     <input name="lname" type="text" placeholder="Last Name" class="form-control">
                                 </div>
@@ -237,13 +299,14 @@
                 </div>
                 <div class="col-md-6">
                     <br/><br/>
-                    <a href=""><legend class="text-center header">View/Edit Existing Users</legend></a>
-                </div>
-                <div class="col-md-6">
-                    <br/>
-                    <a href=""><legend class="text-center header">View/Edit Existing Clients</legend></a>
+                    <button id="goToUsers" class="btn btn-warning">
+                        <span class="fa fa-arrow-circle-right bigicon">View/Edit Existing Users</span>
+                    </button>
                 </div>
             </div>
+        </div>
+        <div class="container" id="displayUsersSection">
+            <!-- Calling servlet DisplayUsers via ajax -->
         </div>
     </body>
 </html>

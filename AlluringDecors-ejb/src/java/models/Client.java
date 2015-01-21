@@ -32,6 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c"),
     @NamedQuery(name = "Client.findByIdClient", query = "SELECT c FROM Client c WHERE c.idClient = :idClient"),
+    // added query to find client by user id
+    @NamedQuery(name = "Client.findByIdUser", query = "SELECT c FROM Client c WHERE c.idUser = :idUser"),
     @NamedQuery(name = "Client.findByPhoneNumber", query = "SELECT c FROM Client c WHERE c.phoneNumber = :phoneNumber"),
     @NamedQuery(name = "Client.findByAdressStreet", query = "SELECT c FROM Client c WHERE c.adressStreet = :adressStreet"),
     @NamedQuery(name = "Client.findByAddressNumber", query = "SELECT c FROM Client c WHERE c.addressNumber = :addressNumber"),

@@ -5,10 +5,12 @@
  */
 package session_beans;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import models.Client;
+import models.User;
 
 /**
  *
@@ -26,6 +28,11 @@ public class ClientFacade extends AbstractFacade<Client> {
 
     public ClientFacade() {
         super(Client.class);
+    }
+    
+    public Client findByUserId(User idUser) {
+        List<Client> clients = (List<Client>) em.createNamedQuery("Client.findByIdUser", Client.class).setParameter("idUser", idUser).getResultList();
+        return clients.isEmpty() ? null : clients.get(0);
     }
     
 }

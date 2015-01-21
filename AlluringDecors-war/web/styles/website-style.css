@@ -41,9 +41,18 @@ h1,h2,h3 {
     color: #b84d4d;
 }
 #clientRegistrationResult,
-#adminRegistrationResult {
+#adminRegistrationResult,
+#displayUsersSection {
     display: none;
     padding-left: 50px;
+}
+.record {
+    padding: 30px;
+    color: #cccccc;
+}
+.goBack,
+#goToUsers {
+    width: 100%;
 }
 .controls a {
     color: #4a4a4a;
