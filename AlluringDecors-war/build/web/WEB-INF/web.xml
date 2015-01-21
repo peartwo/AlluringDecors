@@ -44,6 +44,10 @@
         <servlet-name>DisplayUsers</servlet-name>
         <servlet-class>servlets.DisplayUsers</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageUsers</servlet-name>
+        <servlet-class>servlets.ManageUsers</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VerifyLogin</servlet-name>
         <url-pattern>/VerifyLogin</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>DisplayUsers</servlet-name>
         <url-pattern>/DisplayUsers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageUsers</servlet-name>
+        <url-pattern>/ManageUsers</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

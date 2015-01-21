@@ -7,7 +7,6 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -100,7 +99,7 @@ public class ManageFaq extends HttpServlet {
                 }
                 break;
             default:
-
+                // some error output here
                 break;
         }
     }

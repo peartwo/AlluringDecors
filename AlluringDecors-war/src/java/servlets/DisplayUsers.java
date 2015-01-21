@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Client;
 import models.User;
 import session_beans.ClientFacade;
@@ -43,6 +44,8 @@ public class DisplayUsers extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session = request.getSession();
+        int currentUserId = Integer.parseInt(session.getAttribute("id").toString());
         User user;
         Client client;
         List<User> foundUsers;
@@ -76,7 +79,9 @@ public class DisplayUsers extends HttpServlet {
                 out.println("<strong id=\"email" + adminId + "\">" + user.getEmail() + "</strong> <span id=\"role" + adminId + "\">admin</span>");
                 out.println("<p><span id=\"fname" + adminId + "\">" + user.getFirstname() + "</span> <span id=\"lname" + adminId + "\">" + user.getSurname() + "</span></p>");
                 out.println("<button id=" + adminId + " class=\"btn btn-warning edit\">Edit User</button>");
-                out.println("<button id=" + adminId + " class=\"btn btn-danger delete\">Delete User</button>");
+                if(adminId != currentUserId) {
+                    out.println("<button id=" + adminId + " class=\"btn btn-danger delete\">Delete User</button>");
+                }
                 out.println("</div>");
             }
             out.println("</div>");

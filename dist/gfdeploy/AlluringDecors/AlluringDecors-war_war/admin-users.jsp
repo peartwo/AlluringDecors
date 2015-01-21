@@ -102,6 +102,7 @@
                 $("#adminRegistrationResult").css("display", "block");
             });
 
+            // create form for user when edit button clicked
             $(document).on("click", ".edit", function () {
                 var id = $(this).attr("id");
                 var role = $("#role" + id).text();
@@ -111,7 +112,7 @@
                 $("#role" + id).html("<div class='col-md-6 form-group has-warning'><input type=\"text\" class='form-control' value='" + role + "' disabled></div>");
                 $("#fname" + id).html("<div class='col-md-6 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#fname" + id).text() + "'></div>");
                 $("#lname" + id).html("<div class='col-md-6 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#lname" + id).text() + "'></div>");
-                // Check if user is client
+                // Check if user is client to apply additional fields
                 if (role === "client") {
                     $("#label1-" + id).html("<div class='col-md-2 form-group has-warning'>" + $("#label1-" + id).text() + "</div>");
                     $("#address" + id).html("<div class='col-md-7 form-group has-warning'><input type=\"text\" class='form-control' value='" + $("#address" + id).text() + "'></div>");
@@ -125,24 +126,70 @@
                 $(this).removeClass('edit');
                 $(this).addClass('apply');
             });
-
+            // update user via Ajax when Apply change button clicked
             $(document).on("click", ".apply", function () {
                 var id = $(this).attr("id");
                 var email = $("#email" + id + " input").val();
                 var role = $("#role" + id + " input").val();
                 var fname = $("#fname" + id + " input").val();
                 var lname = $("#lname" + id + " input").val();
-
+                // Check if user is client to add additional data
                 if (role === "client") {
                     var street = $("#address" + id + " input").val();
                     var nr = $("#nr" + id + " input").val();
                     var city = $("#city" + id + " input").val();
                     var zip = $("#zip" + id + " input").val();
                     var phone = $("#phone" + id + " input").val();
-                    alert("Call servlet for User id " + id + ", Email: " + email + ", Role: " + role + ", Name: " + fname + " " + lname + ", Address: " + street + " " + nr + ", " + city + " - " + zip + ", Phone: " + phone);
-                } else {
-                    alert("Call servlet for User id " + id + ", Email: " + email + ", Role: " + role + ", Name: " + fname + " " + lname);
                 }
+                //alert("User id " + id + ", Email: " + email + ", Role: " + role + ", Name: " + fname + " " + lname + ", Address: " + street + " " + nr + ", " + city + " - " + zip + ", Phone: " + phone);
+                $.ajax({
+                    url: "ManageUsers",
+                    data: {
+                        "id": id,
+                        "email": email,
+                        "role": role,
+                        "fname": fname,
+                        "lname": lname,
+                        "action": "update",
+                        "street": street,
+                        "nr": nr,
+                        "city": city,
+                        "zip": zip,
+                        "phone": phone
+                    },
+                    success: function (result) {
+                        $("#user" + id).removeClass("col-md-8");
+                        $("#user" + id).addClass("col-md-4");
+                        $("#user" + id).html(result);
+                    },
+                    error: function () {
+                        $("#user" + id).removeClass("col-md-8");
+                        $("#user" + id).addClass("col-md-4");
+                        $("#user" + id).html("<h3>Error updating the user.<h3>");
+                    }
+                });
+            });
+            // delete user via Ajax when Delete button clicked
+            $(document).on("click", ".delete", function () {
+                var id = $(this).attr("id");
+                var role = $("#role" + id).text();
+                if (confirm("Are you sure you want to delete?")) {
+                    $.ajax({
+                        url: "ManageUsers",
+                        data: {
+                            "id": id,
+                            "role": role,
+                            "action": "delete"
+                        },
+                        success: function (result) {
+                            $("#user" + id).html(result);
+                        },
+                        error: function () {
+                            $("#user" + id).html("<h3>Error deleting the User.<h3>");
+                        }
+                    });
+                }
+                return false;
             });
         </script>
     </head>
