@@ -40,6 +40,11 @@ h1,h2,h3 {
 .feedbackMsg h5 {
     color: #b84d4d;
 }
+#clientRegistrationResult,
+#adminRegistrationResult {
+    display: none;
+    padding-left: 50px;
+}
 .controls a {
     color: #4a4a4a;
 }

@@ -34,6 +34,55 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        
+        <script>
+            jQuery.fn.reset = function () {
+                $(this).each(function () {
+                    this.reset();
+                });
+            };
+            // Register New Client when Register Client button is clicked
+            $(document).on("click", "#registerClient", function (e) {
+                e.preventDefault();
+                var form = $("#clientRegistrationForm");
+                //alert(form.serialize());
+                $.ajax({
+                    type: "POST",
+                    url: "RegisterNewUser",
+                    data: form.serialize(),
+                    success: function (result) {
+                        $("#clientRegistrationResult").html(result);
+                    },
+                    error: function () {
+                        $("#clientRegistrationResult").html("<h3>Error registering new user.<h3>");
+                    }
+                });
+                form.reset();
+                $("#adminRegistrationResult").css("display","none");
+                $("#clientRegistrationResult").css("display","block");
+            }); 
+            // Register New Admin when Register Admin button is clicked
+            $(document).on("click", "#registerAdmin", function (e) {
+                e.preventDefault();
+                var form = $("#adminRegistrationForm");
+                //alert(form.serialize());
+                $.ajax({
+                    type: form.attr("method"),
+                    url: "RegisterNewUser",
+                    data: form.serialize(),
+                    success: function (result) {
+                        $("#adminRegistrationResult").html(result);
+                    },
+                    error: function () {
+                        $("#adminRegistrationResult").html("<h3>Error registering new admin.<h3>");
+                    }
+                });
+                form.reset();
+                $("#clientRegistrationResult").css("display","none");
+                $("#adminRegistrationResult").css("display","block");
+            });
+            
+        </script>
     </head>
 
     <body>
@@ -58,15 +107,16 @@
         <div class="container" id="userRegistrationSection">
             <div class="row">
                 <div class="col-md-6">
-                    <form id="clientRegistrationForm" class="form-horizontal" action="RegisterNewUser" method="post">
+                    <form id="clientRegistrationForm" class="form-horizontal" action="" method="post">
                         <fieldset>
                             <legend class="text-center header">Client Registration</legend>
+                            <input type="hidden" name="userType" value="client">
                             <div class="form-group">
                                 <span class="col-md-2 text-right">
                                     <i class="fa fa-at bigicon"></i>
                                 </span>
                                 <div class="col-md-8">
-                                    <input id="email" name="email" type="text" placeholder="Email Address" class="form-control">
+                                    <input name="email" type="text" placeholder="Email Address" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -74,12 +124,12 @@
                                     <i class="fa fa-lock bigicon"></i>
                                 </span>
                                 <div class="col-md-8">
-                                    <input id="email" name="password" type="password" placeholder="Choose Password" class="form-control">
+                                    <input name="password" type="password" placeholder="Choose Password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-2">
-                                    <input id="email" name="password" type="password" placeholder="Repeat Password" class="form-control">
+                                    <input name="passwordr" type="password" placeholder="Repeat Password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -87,13 +137,13 @@
                                     <i class="fa fa-user bigicon"></i>
                                 </span>
                                 <div class="col-md-8">
-                                    <input id="name" name="fname" type="text" placeholder="First Name" class="form-control">
+                                    <input name="fname" type="text" placeholder="First Name" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 
                                 <div class="col-md-8 col-md-offset-2">
-                                    <input id="name" name="lname" type="text" placeholder="Last Name" class="form-control">
+                                    <input name="lname" type="text" placeholder="Last Name" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -101,22 +151,22 @@
                                     <i class="fa fa-envelope-o bigicon"></i>
                                 </span>
                                 <div class="col-md-8">
-                                    <input id="phone" name="street" type="text" placeholder="Street" class="form-control">
+                                    <input name="street" type="text" placeholder="Street" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-2">
-                                    <input id="phone" name="number" type="text" placeholder="Nr" class="form-control">
+                                    <input name="number" type="text" placeholder="Nr" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-2">
-                                    <input id="phone" name="city" type="text" placeholder="City" class="form-control">
+                                    <input name="city" type="text" placeholder="City" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-2">
-                                    <input id="phone" name="zip" type="text" placeholder="ZIP" class="form-control">
+                                    <input name="zip" type="text" placeholder="ZIP" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -124,27 +174,29 @@
                                     <i class="fa fa-phone-square bigicon"></i>
                                 </span>
                                 <div class="col-md-8">
-                                    <input id="phone" name="phone" type="text" placeholder="Phone" class="form-control">
+                                    <input name="phone" type="text" placeholder="Phone" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-2">
-                                    <button type="submit" class="btn btn-danger btn-lg" id="formbutton">Submit</button>
+                                    <button id="registerClient" type="submit" class="btn btn-danger btn-lg">Register Client</button>
                                 </div>
                             </div>
                         </fieldset>
                     </form>
+                    <div id="clientRegistrationResult" class="row responseText"></div>
                 </div>
                 <div class="col-md-6">
-                    <form id="adminRegistrationForm" class="form-horizontal" action="RegisterNewUser" method="post">
+                    <form id="adminRegistrationForm" class="form-horizontal" action="" method="post">
                         <fieldset>
                             <legend class="text-center header">Admin Registration</legend>
+                            <input type="hidden" name="userType" value="admin">
                             <div class="form-group">
                                 <span class="col-md-2 text-right">
                                     <i class="fa fa-at bigicon"></i>
                                 </span>
-                                <div class="col-md-8">
-                                    <input id="email" name="email" type="text" placeholder="Email Address" class="form-control">
+                                <div class="col-md-9">
+                                    <input name="email" type="text" placeholder="Email Address" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -152,39 +204,40 @@
                                     <i class="fa fa-lock bigicon"></i>
                                 </span>
                                 <div class="col-md-8">
-                                    <input id="email" name="password" type="password" placeholder="Choose Password" class="form-control">
+                                    <input name="password" type="password" placeholder="Choose Password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-md-8 col-md-offset-2">
-                                    <input id="email" name="password" type="password" placeholder="Repeat Password" class="form-control">
+                                <div class="col-md-9 col-md-offset-2">
+                                    <input name="passwordr" type="password" placeholder="Repeat Password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <span class="col-md-2 text-right">
                                     <i class="fa fa-user bigicon"></i>
                                 </span>
-                                <div class="col-md-8">
-                                    <input id="name" name="fname" type="text" placeholder="First Name" class="form-control">
+                                <div class="col-md-9">
+                                    <input name="fname" type="text" placeholder="First Name" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 
-                                <div class="col-md-8 col-md-offset-2">
-                                    <input id="name" name="lname" type="text" placeholder="Last Name" class="form-control">
+                                <div class="col-md-9 col-md-offset-2">
+                                    <input name="lname" type="text" placeholder="Last Name" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-md-8 col-md-offset-2">
-                                    <button type="submit" class="btn btn-danger btn-lg" id="formbutton">Submit</button>
+                                <div class="col-md-9 col-md-offset-2">
+                                    <button id="registerAdmin" type="submit" class="btn btn-danger btn-lg">Register Admin</button>
                                 </div>
                             </div>
                         </fieldset>
                     </form>
+                    <div id="adminRegistrationResult" class="row responseText"></div>
                 </div>
                 <div class="col-md-6">
                     <br/><br/>
-                    <a href=""><legend class="text-center header">View/Edit Existing Administrators</legend></a>
+                    <a href=""><legend class="text-center header">View/Edit Existing Users</legend></a>
                 </div>
                 <div class="col-md-6">
                     <br/>

@@ -6,6 +6,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,7 +26,6 @@ public class RegisterNewClient extends HttpServlet {
     @EJB
     private ClientFacade clientObj;
 
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,7 +37,7 @@ public class RegisterNewClient extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user = (User)request.getAttribute("user");
+        User user = (User) request.getAttribute("user");
 
         Client client = new Client();
         client.setIdClient(clientObj.count() + 1);
@@ -50,9 +50,18 @@ public class RegisterNewClient extends HttpServlet {
 
         clientObj.create(client);
         System.out.println("New Client created");
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/VerifyLogin?username="+user.getEmail()+"&password="+user.getPassword());
-        rd.forward(request, response);  
 
+        if (request.getAttribute("from").equals("admin")) {
+            // New Client registered by admin
+            try (PrintWriter out = response.getWriter()) {
+                out.println("<h5 class=\"question\">" +user.getFirstname()+ " " +user.getSurname()+ " was successfully registered as client.</h5>");
+                out.println("<p><strong>Username: </strong>  " + user.getEmail() + "</p>");
+            }
+        } else {
+            // New Client registration
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/VerifyLogin?username=" + user.getEmail() + "&password=" + user.getPassword());
+            rd.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
