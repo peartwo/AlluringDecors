@@ -54,6 +54,7 @@ public class ManageUsers extends HttpServlet {
         String phone;
         String action = request.getParameter("action");
         int id = Integer.parseInt(request.getParameter("id"));
+        int currentUserId = Integer.parseInt(request.getParameter("currentUserId"));
 
         response.setContentType("text/html;charset=UTF-8");
 
@@ -92,7 +93,11 @@ public class ManageUsers extends HttpServlet {
                         out.println("<p><strong id=\"label2-" + id + "\">Phone: </strong><span id=\"phone" + id + "\">" + client.getPhoneNumber() + "</span></p>");
                     }
                     out.println("<button id=" + id + " class=\"btn btn-warning edit\">Edit User</button>");
-                    out.println("<button id=" + id + " class=\"btn btn-danger delete\">Delete User</button>");
+                    if (id != currentUserId) {
+                        out.println("<button id=" + id + " class=\"btn btn-danger delete\">Delete User</button>");
+                    } else {
+                        out.println("<input type=\"hidden\" name=\"currentUserId\" value=" + currentUserId + " >");
+                    }
                 }
                 break;
             case "delete":

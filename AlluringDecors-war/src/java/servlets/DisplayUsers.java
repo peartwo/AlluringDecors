@@ -81,6 +81,8 @@ public class DisplayUsers extends HttpServlet {
                 out.println("<button id=" + adminId + " class=\"btn btn-warning edit\">Edit User</button>");
                 if(adminId != currentUserId) {
                     out.println("<button id=" + adminId + " class=\"btn btn-danger delete\">Delete User</button>");
+                } else {
+                    out.println("<input type=\"hidden\" name=\"currentUserId\" value=" + currentUserId + " >");
                 }
                 out.println("</div>");
             }

@@ -64,7 +64,6 @@
             $(document).on("click", "#registerClient", function (e) {
                 e.preventDefault();
                 var form = $("#clientRegistrationForm");
-                //alert(form.serialize());
                 $.ajax({
                     type: "POST",
                     url: "RegisterNewUser",
@@ -74,7 +73,7 @@
 
                     },
                     error: function () {
-                        $("#clientRegistrationResult").html("<h3>Error registering new user.<h3>");
+                        $("#clientRegistrationResult").html("<h3>Error registering new user.</h3><p>Maybe you forgot to fill out the form properly? (all fields are required).</p>");
                     }
                 });
                 form.reset();
@@ -94,7 +93,7 @@
                         $("#adminRegistrationResult").html(result);
                     },
                     error: function () {
-                        $("#adminRegistrationResult").html("<h3>Error registering new admin.<h3>");
+                        $("#adminRegistrationResult").html("<h3>Error registering new admin.</h3><p>Maybe you forgot to fill out the form properly? (all fields are required).</p>");
                     }
                 });
                 form.reset();
@@ -129,6 +128,7 @@
             // update user via Ajax when Apply change button clicked
             $(document).on("click", ".apply", function () {
                 var id = $(this).attr("id");
+                var currentUserId = $("input[type='hidden'][name='currentUserId']").val();
                 var email = $("#email" + id + " input").val();
                 var role = $("#role" + id + " input").val();
                 var fname = $("#fname" + id + " input").val();
@@ -146,6 +146,7 @@
                     url: "ManageUsers",
                     data: {
                         "id": id,
+                        "currentUserId": currentUserId,
                         "email": email,
                         "role": role,
                         "fname": fname,
@@ -165,7 +166,7 @@
                     error: function () {
                         $("#user" + id).removeClass("col-md-8");
                         $("#user" + id).addClass("col-md-4");
-                        $("#user" + id).html("<h3>Error updating the user.<h3>");
+                        $("#user" + id).html("<h3>Error updating the user.</h3><p>Please refresh the page and try again. Make sure the email field is not empty.</p>");
                     }
                 });
             });
@@ -191,6 +192,56 @@
                 }
                 return false;
             });
+            
+            // form input validation
+            function validateInput(input) {
+                $(".validation-message", $(input).parent()).remove();
+                
+                var value = $(input).val().trim();
+                if (value === "") {
+                    var msg = "Field is required.";
+                    $(input).parent().append('<span class="validation-message">' + msg + '</span>');
+                    return false;
+                }
+                
+                var id = $(input).attr("name");
+                var regex;
+                switch (id) {
+                    case "email":
+                        regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        break;
+                    case "number":
+                        regex = /^[0-9\/]+$/;
+                        break;
+                    case "zip":
+                        regex = /^[0-9]{5}$/;
+                        break;
+                    case "phone":
+                        regex = /^[0-9]{5,}$/;
+                        break;
+                    case "password2":
+                        if ($("input[name='password']").val() !== value) {
+                            var msg = "Fields does not match.";
+                            $(input).parent().append('<span class="validation-message">' + msg + '</span>');
+                            return false;
+                        }
+                    default:
+                        return true;
+                }
+                if (regex.test(value)) {
+                    return true;
+                }
+                var msg = "Field has invalid format.";
+                $(input).parent().append('<span class="validation-message">' + msg + '</span>');
+                return false;
+            }
+            (function($) {
+                $(document).ready(function() {
+                    $("input").blur(function() {
+                        validateInput(this);
+                    });
+                });
+            })(jQuery);
         </script>
     </head>
 
@@ -238,7 +289,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-2">
-                                    <input name="passwordr" type="password" placeholder="Repeat Password" class="form-control">
+                                    <input name="password2" type="password" placeholder="Repeat Password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -318,7 +369,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-md-9 col-md-offset-2">
-                                    <input name="passwordr" type="password" placeholder="Repeat Password" class="form-control">
+                                    <input name="password2" type="password" placeholder="Repeat Password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">

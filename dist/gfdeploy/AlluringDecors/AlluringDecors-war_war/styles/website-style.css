@@ -23,8 +23,12 @@ h1,h2,h3 {
 .topMargin {
     margin-top: 110px;
 }
-.light {
+.light,
+.validation-message {
     color: #dedede;
+}
+.validation-message {
+    background-color: #121212;
 }
 .responseText {
     padding-bottom: 10px;

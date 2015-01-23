@@ -29,6 +29,70 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script>
+            // form input validation
+            function validateInput(input) {
+                $(".validation-message", $(input).parent()).remove();
+                
+                var value = $(input).val().trim();
+                if (value === "") {
+                    var msg = "Field is required.";
+                    $(input).parent().append('<span class="validation-message">' + msg + '</span>');
+                    return false;
+                }
+                
+                var id = $(input).attr("name");
+                var regex;
+                switch (id) {
+                    case "email":
+                        regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        break;
+                    case "number":
+                        regex = /^[0-9\/]+$/;
+                        break;
+                    case "zip":
+                        regex = /^[0-9]{5}$/;
+                        break;
+                    case "phone":
+                        regex = /^[0-9]{5,}$/;
+                        break;
+                    case "password2":
+                        if ($("input#password").val() != value) {
+                            var msg = "Fields does not match.";
+                            $(input).parent().append('<span class="validation-message">' + msg + '</span>');
+                            return false;
+                        }
+                    default:
+                        return true;
+                }
+                if (regex.test(value)) {
+                    return true;
+                }
+                var msg = "Field has invalid format.";
+                $(input).parent().append('<span class="validation-message">' + msg + '</span>');
+                return false;
+            }
+
+            (function($) {
+                $(document).ready(function() {
+                    $("form input").blur(function() {
+                        validateInput(this);
+                    });
+                    $("form").submit(function() {
+                        var ok = true;
+                        $("input", $(this)).each(function(index, input) {
+                            ok = validateInput(input) && ok;
+                        });
+                        return ok;
+                    });
+                });
+            })(jQuery);
+        </script>
     </head>
     <body>
         <jsp:include page="/WEB-INF/jspf/defaultnavigation.jspf"/>
@@ -114,10 +178,5 @@
                 </div>
             </div>
         </div>
-        
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     </body>
 </html>
