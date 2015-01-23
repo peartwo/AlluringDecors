@@ -60,6 +60,10 @@
         <servlet-name>AddNewServiceType</servlet-name>
         <servlet-class>servlets.AddNewServiceType</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateServiceOrder</servlet-name>
+        <servlet-class>servlets.CreateServiceOrder</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VerifyLogin</servlet-name>
         <url-pattern>/VerifyLogin</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>AddNewServiceType</servlet-name>
         <url-pattern>/AddNewServiceType</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateServiceOrder</servlet-name>
+        <url-pattern>/CreateServiceOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

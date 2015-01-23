@@ -61,7 +61,11 @@ public class DisplayServices extends HttpServlet {
 
                     // If current user is client display a button to order services
                     if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("client"))) {
-                        out.println("<button id=" + st.getIdServiceType() + " class=\"btn btn-warning center-block\">Order Services</button>");
+                        out.println("<form action='CreateServiceOrder' method='post'>");
+                        out.println("<input type='hidden' name='currentDomainID' value=" + id + ">");
+                        out.println("<input type='hidden' name='currentServiceID' value=" + st.getIdServiceType() + ">");
+                        out.println("<button type='submit' class=\"btn btn-warning center-block\">Order Services</button>");
+                        out.println("</form>");
                     }
 
                     // If current user is admin display buttons to order, update or delete services

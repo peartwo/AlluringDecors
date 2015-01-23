@@ -63,14 +63,14 @@ public class VerifyLogin extends HttpServlet {
             session = request.getSession(true);
             session.setMaxInactiveInterval(15 * 60);
             session.setAttribute("userRole", "admin");
-            session.setAttribute("id", currentUser.get("id"));
+            session.setAttribute("currentUserId", currentUser.get("id"));
             session.setAttribute("name", currentUser.get("name"));
             response.sendRedirect(".");
         } else if((loginValid==true) && (currentUser.get("user_type").equals("client"))) {
             session = request.getSession(true);
             session.setMaxInactiveInterval(15 * 60);
             session.setAttribute("userRole", "client");
-            session.setAttribute("id", currentUser.get("id"));
+            session.setAttribute("currentUserId", currentUser.get("id"));
             session.setAttribute("name", currentUser.get("name"));
             response.sendRedirect(".");
         } else {
