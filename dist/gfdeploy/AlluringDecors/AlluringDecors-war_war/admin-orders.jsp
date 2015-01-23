@@ -57,7 +57,8 @@
 
         <div class="container" id="userRegistrationSection">
             <div class="row">
-                <legend class="text-center header">Order Management</legend>
+                <legend class="text-center header">Order Management for Admins</legend>
+                <jsp:include page="/ManageServiceRequests"></jsp:include>
             </div>
         </div>
     </body>
