@@ -64,6 +64,14 @@
         <servlet-name>CreateServiceOrder</servlet-name>
         <servlet-class>servlets.CreateServiceOrder</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddOrderToRequest</servlet-name>
+        <servlet-class>servlets.AddOrderToRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadClientServiceOrders</servlet-name>
+        <servlet-class>servlets.LoadClientServiceOrders</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VerifyLogin</servlet-name>
         <url-pattern>/VerifyLogin</url-pattern>
@@ -127,6 +135,14 @@
     <servlet-mapping>
         <servlet-name>CreateServiceOrder</servlet-name>
         <url-pattern>/CreateServiceOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddOrderToRequest</servlet-name>
+        <url-pattern>/AddOrderToRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadClientServiceOrders</servlet-name>
+        <url-pattern>/LoadClientServiceOrders</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -5,9 +5,12 @@
  */
 package session_beans;
 
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import models.Client;
 import models.ServiceRequest;
 
 /**
@@ -15,7 +18,7 @@ import models.ServiceRequest;
  * @author zuzanahruskova
  */
 @Stateless
-public class ServiceRequestFacade extends AbstractFacade<ServiceRequest> {
+public class ServiceRequestFacade extends AbstractFacade<ServiceRequest> {    
     @PersistenceContext(unitName = "AlluringDecors-ejbPU")
     private EntityManager em;
 
@@ -28,4 +31,18 @@ public class ServiceRequestFacade extends AbstractFacade<ServiceRequest> {
         super(ServiceRequest.class);
     }
     
+    public ServiceRequest getCartByClient(Client client){
+        List<ServiceRequest> requests = (List<ServiceRequest>) em.createNativeQuery(
+                "SELECT * FROM service_request WHERE id_client = ?", 
+                ServiceRequest.class).setParameter(1, client.getIdClient()).getResultList(); 
+        if (!requests.isEmpty()) {           
+            return requests.get(0);
+        } else {
+            ServiceRequest sr = new ServiceRequest();
+            sr.setIdClient(client);
+            sr.setDateCreated(new Date());
+            create(sr);
+            return sr;
+        }
+    }
 }

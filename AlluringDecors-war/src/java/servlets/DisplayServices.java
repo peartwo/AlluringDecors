@@ -61,7 +61,7 @@ public class DisplayServices extends HttpServlet {
 
                     // If current user is client display a button to order services
                     if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("client"))) {
-                        out.println("<form action='CreateServiceOrder' method='post'>");
+                        out.println("<form action='client-newserviceorder.jsp' method='post'>");
                         out.println("<input type='hidden' name='currentDomainID' value=" + id + ">");
                         out.println("<input type='hidden' name='currentServiceID' value=" + st.getIdServiceType() + ">");
                         out.println("<button type='submit' class=\"btn btn-warning center-block\">Order Services</button>");
@@ -70,8 +70,7 @@ public class DisplayServices extends HttpServlet {
 
                     // If current user is admin display buttons to order, update or delete services
                     if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                        out.println("<button id=" + st.getIdServiceType() + " class=\"btn btn-warning\">Order</button>"
-                                + "<button id=" + st.getIdServiceType() + "-update\" class=\"btn btn-default\"><span class=\"fa fa-edit\">Edit</span></button>"
+                        out.println("<button id=" + st.getIdServiceType() + "-update\" class=\"btn btn-default\"><span class=\"fa fa-edit\">Edit</span></button>"
                                 + "<button id=" + st.getIdServiceType() + "-delete\" class=\"btn btn-danger\"><span class=\"fa fa-minus-square\">Delete</span></button>");
                     }
 
