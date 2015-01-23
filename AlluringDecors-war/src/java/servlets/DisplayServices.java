@@ -76,7 +76,7 @@ public class DisplayServices extends HttpServlet {
                 
                 // If current user is admin display a button to add new service
                 if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                    out.println("<div class=\"col-md-3 yellowbox\">");
+                    out.println("<div id=\"newService\" class=\"col-md-3 yellowbox\">");
                     out.println("<button id=\"addService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Service</span></button>");
                     out.println("</div>");
                 }
@@ -84,7 +84,15 @@ public class DisplayServices extends HttpServlet {
                 out.println("<a class=\"col-md-12 text-center\" href=\"services.jsp\">"
                         + "<span class=\"fa fa-arrow-circle-left bigicon\">Return to domains</span></a>");
             } else {
-                out.println("<h1>No Services were found for Domain " + id + "</h1>");
+                out.println("<h3>There are no services at this time. </h3>");
+                // If current user is admin display a button to add new service
+                if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
+                    out.println("<div id=\"newService\" class=\"col-md-3 yellowbox\">");
+                    out.println("<button id=\"addService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Service</span></button>");
+                    out.println("</div>");
+                }
+                out.println("<a class=\"col-md-12 text-center\" href=\"services.jsp\">"
+                        + "<span class=\"fa fa-arrow-circle-left bigicon\">Return to domains</span></a>");
             }
         }
     }

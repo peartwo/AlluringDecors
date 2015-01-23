@@ -5,6 +5,7 @@
  */
 package session_beans;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +27,11 @@ public class ServiceDomainFacade extends AbstractFacade<ServiceDomain> {
 
     public ServiceDomainFacade() {
         super(ServiceDomain.class);
+    }
+    
+    public ServiceDomain findByName(String name) {
+        List<ServiceDomain> domains = (List<ServiceDomain>) em.createNamedQuery("ServiceDomain.findByName", ServiceDomain.class).setParameter("name", name).getResultList();
+        return domains.isEmpty() ? null : domains.get(0);
     }
     
 }

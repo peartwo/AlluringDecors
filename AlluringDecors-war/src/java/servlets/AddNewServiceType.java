@@ -7,24 +7,28 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import models.ServiceDomain;
 import session_beans.ServiceDomainFacade;
+import session_beans.ServiceTypeFacade;
 
 /**
  *
  * @author zuzanahruskova
  */
-public class DisplayDomains extends HttpServlet {
+public class AddNewServiceType extends HttpServlet {
 
     @EJB
-    private ServiceDomainFacade domainObj;
+    private ServiceDomainFacade serviceDomainObj;
+    @EJB
+    private ServiceTypeFacade serviceTypeObj;
+    
+    private final static Logger LOGGER
+            = Logger.getLogger(AddNewDomain.class.getCanonicalName());
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,29 +41,12 @@ public class DisplayDomains extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<ServiceDomain> domains = domainObj.findAll();
-        HttpSession session = request.getSession();
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-
-            for (ServiceDomain sd : domains) {
-                out.println("<div class=\"col-md-6 domainbox\" id=" + sd.getIdServiceDomain() + " >");
-                // If current user is admin display buttons to update or delete domain
-                if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                    out.println("<button type=\"submit\" class=\"btn btn-default pull-right edit\">Edit</button>"
-                            + "<button class=\"btn btn-danger pull-right delete\">Delete</button>");
-                }
-                out.println("<h3 id=\"name" + sd.getIdServiceDomain() + "\">" + sd.getName() + "</h3>");
-                out.println("<center><img src=\"images/domains/" + sd.getIdServiceDomain() + ".jpg\" alt=" + sd.getName() + " class=\"img-circle\" /></center>");
-                out.println("</div>");
-            }
-            // If current user is admin display a button to add new domain
-            if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                out.println("<div id=\"newDomain\" class=\"col-md-6 newdomainbox\">");
-                out.println("<button id=\"addDomain\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Domain</span></button>");
-                out.println("</div>");
-            }
-        }
+        
+        boolean imgUploaded = false;
+        
+        
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

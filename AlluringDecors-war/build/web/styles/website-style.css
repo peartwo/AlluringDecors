@@ -108,7 +108,8 @@ h1,h2,h3 {
 .yellowbox h3 {
     height: 50px;
 }
-#addService {
+#addService,
+#addDomain {
     width: 100%;
 }
 .greybox {
@@ -116,7 +117,9 @@ h1,h2,h3 {
     background-color: #dedede;
     border-radius: 10px;
 }
-.domainbox {
+.domainbox,
+.newdomainbox,
+.domainformbox {
     padding: 10px;
     color: #3d2e00;
     background-color: olive;

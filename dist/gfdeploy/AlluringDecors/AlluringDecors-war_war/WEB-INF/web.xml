@@ -48,6 +48,18 @@
         <servlet-name>ManageUsers</servlet-name>
         <servlet-class>servlets.ManageUsers</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddNewDomain</servlet-name>
+        <servlet-class>servlets.AddNewDomain</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageDomains</servlet-name>
+        <servlet-class>servlets.ManageDomains</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddNewServiceType</servlet-name>
+        <servlet-class>servlets.AddNewServiceType</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VerifyLogin</servlet-name>
         <url-pattern>/VerifyLogin</url-pattern>
@@ -95,6 +107,18 @@
     <servlet-mapping>
         <servlet-name>ManageUsers</servlet-name>
         <url-pattern>/ManageUsers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewDomain</servlet-name>
+        <url-pattern>/AddNewDomain</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageDomains</servlet-name>
+        <url-pattern>/ManageDomains</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewServiceType</servlet-name>
+        <url-pattern>/AddNewServiceType</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
