@@ -59,7 +59,7 @@
         <div class="container" id="userRegistrationSection">
             <div class="row">
                 <legend class="text-center header">Current Orders for <%=name%></legend>
-                <jsp:include page="/LoadClientServiceOrders" flush="true"></jsp:include>
+                <jsp:include page="/ManageOrdersForClient" flush="true"></jsp:include>
             </div>
         </div>
     </body>

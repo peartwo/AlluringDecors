@@ -101,8 +101,10 @@
                     processData: false,
                     success: function (result)
                     {
-                        $(result).insertAfter($(".domainbox").last());
+                        //$(result).insertAfter($(".domainbox").last());
+                        $(".domainbox").last().after(result);
                         formObj.reset();
+                        //location.reload(true);
                     },
                     error: function (errorThrown)
                     {
@@ -194,7 +196,7 @@
         %>
         <div class="container" id="domains">
             <div class="row">
-                <jsp:include page="DisplayDomains" flush="true" />
+                <jsp:include page="/DisplayDomains" flush="true" />
             </div>
         </div>
     </body>

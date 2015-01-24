@@ -7,6 +7,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,15 +33,24 @@ public class Logout extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
+        HttpSession session;
+
         if (request.getSession() != null) {
-            HttpSession session = request.getSession();
+            session = request.getSession();
             String name = session.getAttribute("name").toString();
+            System.out.println(name);
             session.invalidate();
-            out.println("<html><script type=\"text/javascript\">alert('Thank you for visiting our page, " + name + " . You have logged out successfully.');window.location='index.jsp'</script></html>");
+            RequestDispatcher rd = request.getRequestDispatcher("logout.jsp");
+            request.setAttribute("name", name);
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Cache-Control", "no-store");
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0);
+            rd.forward(request, response);
         } else {
-            out.println("<html><script type=\"text/javascript\">alert('Session expired.');window.location='index.jsp'</script></html>");
+            try (PrintWriter out = response.getWriter()) {
+                out.println("<html><script type=\"text/javascript\">alert('Session expired.');window.location='index.jsp'</script></html>");
+            }
         }
     }
 

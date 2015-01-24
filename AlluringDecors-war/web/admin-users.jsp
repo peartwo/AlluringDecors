@@ -397,7 +397,7 @@
                 </div>
                 <div class="col-md-6">
                     <br/><br/>
-                    <button id="goToUsers" class="btn btn-warning">
+                    <button id="goToUsers" class="btn btn-default">
                         <span class="fa fa-arrow-circle-right bigicon">View/Edit Existing Users</span>
                     </button>
                 </div>

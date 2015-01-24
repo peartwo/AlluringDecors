@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/zuzanahruskova/NetBeansProjects/AlluringDecors/AlluringDecors-war/web/WEB-INF/jspf/clientnavigation.jspf</file>
+            <file>file:/Users/zuzanahruskova/NetBeansProjects/AlluringDecors/AlluringDecors-war/src/java/servlets/VerifyLogin.java</file>
             <file>file:/Users/zuzanahruskova/NetBeansProjects/AlluringDecors/AlluringDecors-war/web/admin-orders.jsp</file>
-            <file>file:/Users/zuzanahruskova/NetBeansProjects/AlluringDecors/AlluringDecors-war/web/index.jsp</file>
+            <file>file:/Users/zuzanahruskova/NetBeansProjects/AlluringDecors/AlluringDecors-war/src/java/servlets/Logout.java</file>
             <file>file:/Users/zuzanahruskova/NetBeansProjects/AlluringDecors/AlluringDecors-war/src/java/servlets/ManageServiceRequests.java</file>
+            <file>file:/Users/zuzanahruskova/NetBeansProjects/AlluringDecors/AlluringDecors-war/web/client-orders.jsp</file>
         </group>
     </open-files>
 </project-private>

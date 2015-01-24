@@ -45,7 +45,7 @@ public class DisplayUsers extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        int currentUserId = Integer.parseInt(session.getAttribute("id").toString());
+        int currentUserId = Integer.parseInt(session.getAttribute("currentUserId").toString());
         User user;
         Client client;
         List<User> foundUsers;
@@ -67,7 +67,7 @@ public class DisplayUsers extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<div class=\"row\">");
-            out.println("<button class=\"btn btn-warning goBack\"><span class=\"fa fa-arrow-circle-left bigicon\">Back To New Admin/Client Registration</span></button>");
+            out.println("<button class=\"btn btn-default goBack\"><span class=\"fa fa-arrow-circle-left bigicon\">Back To New Admin/Client Registration</span></button>");
             out.println("</div>");
             
             out.println("<h3 class=\"text-warning\">Existing Admins</h3>");
@@ -106,7 +106,7 @@ public class DisplayUsers extends HttpServlet {
             }
             out.println("</div>");
             out.println("<div class=\"row\">");
-            out.println("<button class=\"btn btn-warning goBack\"><span class=\"fa fa-arrow-circle-left bigicon\">Back To New Admin/Client Registration</span></button>");
+            out.println("<button class=\"btn btn-default goBack\"><span class=\"fa fa-arrow-circle-left bigicon\">Back To New Admin/Client Registration</span></button>");
             out.println("</div>");
         }
     }

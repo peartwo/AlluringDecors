@@ -109,7 +109,7 @@
                 <%
                     if (session.getAttribute("userRole") == null) {
                 %>
-                <h2><a href="registration.jsp">Register Now</a></h2>
+                <h2><a class="text-danger" href="registration.jsp">Register Now</a></h2>
                 <%
                     }
                 %>

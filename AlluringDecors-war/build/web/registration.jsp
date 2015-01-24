@@ -62,7 +62,7 @@
                         regex = /^[0-9]{5,}$/;
                         break;
                     case "password2":
-                        if ($("input#password").val() != value) {
+                        if ($("input#password").val() !== value) {
                             var msg = "Fields does not match.";
                             $(input).parent().append('<span class="validation-message">' + msg + '</span>');
                             return false;

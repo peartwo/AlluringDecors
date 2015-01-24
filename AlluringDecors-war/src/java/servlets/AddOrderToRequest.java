@@ -78,13 +78,14 @@ public class AddOrderToRequest extends HttpServlet {
             service.setContent(request.getParameter("serviceContent"));
             service.setBilledAmount(0.00f);
         serviceObj.create(service);
+        sr.getServiceCollection().add(service);
+        
+        for (Service s : sr.getServiceCollection()) {
+            System.out.println(s.getIdServiceDomain().getName());
+        }
         System.out.println("Service created.");
         
         response.sendRedirect("client-orders.jsp");
-        /*response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<div class=\"col-md-8 col-md-offset-2\">Service " + serviceType + " was successfully added to your <a href='client-orders.jsp'>service requests</a>.</div>");
-        }*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

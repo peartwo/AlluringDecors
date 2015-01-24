@@ -44,59 +44,57 @@ public class DisplayServices extends HttpServlet {
         HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
 
-        try (PrintWriter out = response.getWriter()) {
+        PrintWriter out = response.getWriter();
+        if (!foundServices.isEmpty()) {
 
-            if (!foundServices.isEmpty()) {
+            out.println("<a class=\"col-md-12 text-center\" href=\"services.jsp\">"
+                    + "<span class=\"fa fa-arrow-circle-left bigicon\">Return to domains</span></a>");
+            // out.println("<h1>Services for Domain " + id + "</h1>");                   
+            Iterator i = foundServices.iterator();
+            ServiceType st;
+            while (i.hasNext()) {
+                st = (ServiceType) i.next();
+                out.println("<div class=\"col-md-3 yellowbox\">");
+                out.println("<img src=\"images/services/" + st.getIdServiceType() + "-2.jpg\" alt=" + st.getName() + " class=\"img-circle center-block\" />");
+                out.println("<h3>" + st.getName() + "</h3>");
 
-                out.println("<a class=\"col-md-12 text-center\" href=\"services.jsp\">"
-                        + "<span class=\"fa fa-arrow-circle-left bigicon\">Return to domains</span></a>");
-                // out.println("<h1>Services for Domain " + id + "</h1>");                   
-                Iterator i = foundServices.iterator();
-                ServiceType st;
-                while (i.hasNext()) {
-                    st = (ServiceType) i.next();
-                    out.println("<div class=\"col-md-3 yellowbox\">");
-                    out.println("<img src=\"images/services/" + st.getIdServiceType() + "-2.jpg\" alt=" + st.getName() + " class=\"img-circle center-block\" />");
-                    out.println("<h3>" + st.getName() + "</h3>");
-
-                    // If current user is client display a button to order services
-                    if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("client"))) {
-                        out.println("<form action='client-newserviceorder.jsp' method='post'>");
-                        out.println("<input type='hidden' name='currentDomainID' value=" + id + ">");
-                        out.println("<input type='hidden' name='currentServiceID' value=" + st.getIdServiceType() + ">");
-                        out.println("<button type='submit' class=\"btn btn-warning center-block\">Order Services</button>");
-                        out.println("</form>");
-                    }
-
-                    // If current user is admin display buttons to order, update or delete services
-                    if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                        out.println("<button id=" + st.getIdServiceType() + "-update\" class=\"btn btn-default\"><span class=\"fa fa-edit\">Edit</span></button>"
-                                + "<button id=" + st.getIdServiceType() + "-delete\" class=\"btn btn-danger\"><span class=\"fa fa-minus-square\">Delete</span></button>");
-                    }
-
-                    out.println("</div>");
+                // If current user is client display a button to order services
+                if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("client"))) {
+                    out.println("<form action='client-newserviceorder.jsp' method='post'>");
+                    out.println("<input type='hidden' name='currentDomainID' value=" + id + ">");
+                    out.println("<input type='hidden' name='currentServiceID' value=" + st.getIdServiceType() + ">");
+                    out.println("<button type='submit' class=\"btn btn-warning center-block\">Order Services</button>");
+                    out.println("</form>");
                 }
-                
-                // If current user is admin display a button to add new service
+
+                // If current user is admin display buttons to order, update or delete services
                 if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                    out.println("<div id=\"newService\" class=\"col-md-3 yellowbox\">");
-                    out.println("<button id=\"addService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Service</span></button>");
-                    out.println("</div>");
+                    out.println("<button id=" + st.getIdServiceType() + "-update\" class=\"btn btn-default\"><span class=\"fa fa-edit\">Edit</span></button>"
+                            + "<button id=" + st.getIdServiceType() + "-delete\" class=\"btn btn-danger\"><span class=\"fa fa-minus-square\">Delete</span></button>");
                 }
-                
-                out.println("<a class=\"col-md-12 text-center\" href=\"services.jsp\">"
-                        + "<span class=\"fa fa-arrow-circle-left bigicon\">Return to domains</span></a>");
-            } else {
-                out.println("<h3>There are no services at this time. </h3>");
-                // If current user is admin display a button to add new service
-                if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                    out.println("<div id=\"newService\" class=\"col-md-3 yellowbox\">");
-                    out.println("<button id=\"addService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Service</span></button>");
-                    out.println("</div>");
-                }
-                out.println("<a class=\"col-md-12 text-center\" href=\"services.jsp\">"
-                        + "<span class=\"fa fa-arrow-circle-left bigicon\">Return to domains</span></a>");
+
+                out.println("</div>");
             }
+
+            // If current user is admin display a button to add new service
+            if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
+                out.println("<div id=\"newService\" class=\"col-md-3 yellowbox\">");
+                out.println("<button id=\"addService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Service</span></button>");
+                out.println("</div>");
+            }
+
+            out.println("<a class=\"col-md-12 text-center\" href=\"services.jsp\">"
+                    + "<span class=\"fa fa-arrow-circle-left bigicon\">Return to domains</span></a>");
+        } else {
+            out.println("<h3>There are no services at this time. </h3>");
+            // If current user is admin display a button to add new service
+            if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
+                out.println("<div id=\"newService\" class=\"col-md-3 yellowbox\">");
+                out.println("<button id=\"addService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Service</span></button>");
+                out.println("</div>");
+            }
+            out.println("<a class=\"col-md-12 text-center\" href=\"services.jsp\">"
+                    + "<span class=\"fa fa-arrow-circle-left bigicon\">Return to domains</span></a>");
         }
     }
 

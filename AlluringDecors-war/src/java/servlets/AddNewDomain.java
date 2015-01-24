@@ -100,7 +100,8 @@ public class AddNewDomain extends HttpServlet {
                 out.println("<button type=\"submit\" class=\"btn btn-default pull-right edit\">Edit</button>");
                 out.println("<button class=\"btn btn-danger pull-right delete\">Delete</button>");
                 out.println("<h3>" + sd.getName() + "</h3>");
-                out.println("<center><img src=\"images/domains/" + domainId + ".jpg\" alt=" + sd.getName() + " class=\"img-circle\" /></center>");
+                out.println("<center><img src=\"images/domains/" + domainId + ".jpg\" alt=\"" + sd.getName() + "\" class=\"img-circle\" /></center>");
+                System.out.println("<center><img src=\"images/domains/" + domainId + ".jpg\" alt=\"" + sd.getName() + "\" class=\"img-circle\" /></center>");
                 out.println("</div>");
             }
         }

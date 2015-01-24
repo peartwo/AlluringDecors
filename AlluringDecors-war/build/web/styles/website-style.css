@@ -16,6 +16,10 @@ h1,h2,h3 {
     padding: 8px 20px 8px 15px;
     font-size: 2em;
 }
+#about p {
+    font-size: 1.2em;
+    text-align: justify;
+}
 .divider {
     text-align: center;
 }
@@ -43,6 +47,9 @@ h1,h2,h3 {
 }
 .feedbackMsg h5 {
     color: #b84d4d;
+}
+.smallfont {
+    font-size: 0.9em;
 }
 #clientRegistrationResult,
 #adminRegistrationResult,

@@ -22,11 +22,11 @@
                 <li><a href="services.jsp" class="testClick">Services Offered</a></li>
                 <li><a href="contact.jsp" class="testClick">Contact/Feedback</a></li>
                 <li><a href="faq.jsp" class="testClick">FAQ's</a></li>
-                <li class="list-group-item-danger"><a href="admin-users.jsp" class="testClick">Users</a></li>
-                <li class="list-group-item-danger"><a href="admin-orders.jsp" class="testClick">Service Requests</a></li>
+                <li class="list-group-item-danger"><a href="admin-users.jsp" class="testClick">Manage Users</a></li>
+                <li class="list-group-item-danger"><a href="admin-orders.jsp" class="testClick">Manage Service Requests</a></li>
             </ul>
-            <form class="navbar-form navbar-right" action="Logout" method="post">
-                Logged in as admin
+            <form class="navbar-form navbar-right" action="Logout" method="post">            
+                <strong>Logged in (admin) &nbsp;</strong>
                 <button class="btn btn-danger">Logout</button>
             </form>
         </div>

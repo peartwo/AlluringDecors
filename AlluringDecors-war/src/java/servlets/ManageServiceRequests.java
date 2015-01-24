@@ -7,7 +7,8 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
@@ -53,119 +54,147 @@ public class ManageServiceRequests extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat dateFormatShort = new SimpleDateFormat("MM/yy");
+
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            //out.println("<!DOCTYPE html>");
-            //out.println("<html>");
-            //out.println("<head>");
-            //out.println("<title>Alluring Decors - Order Management</title>");            
-            //out.println("</head>");
-            //out.println("<body>");
-            
-            //check, if a client has been already choosen or changed
-            //if yes, set his ID to session
-            int targetClientID = 0;
-            if (request.getParameter("targetClientID") != null) {
-                session.setAttribute("targetClientID", request.getParameter("targetClientID"));
-            }
-            if (session.getAttribute("targetClientID") != null) {
-                targetClientID = Integer.parseInt((String) session.getAttribute("targetClientID"));
-            }
-            //check, if a service is choosen for editation
-            int editedServiceID = 0;
-            if (request.getParameter("editedServiceID") != null) {
-                editedServiceID = Integer.parseInt(request.getParameter("editedServiceID"));
-            }
-            //update or delete record
-            if (request.getParameter("update") != null) {
-                int updatedServiceID = Integer.parseInt(request.getParameter("update"));
-                Service service = serviceObj.find(updatedServiceID);
-                service.setAddress(request.getParameter("serviceAddress"));
-                service.setContent(request.getParameter("serviceContent"));
-                service.setBilledAmount(Float.valueOf(request.getParameter("billedAmount")));
-                String str = request.getParameter("datePaid");
-                if (!(request.getParameter("datePaid") == null)) {
-                    service.setDatePaid(null);
-                } else {
-                    service.setDatePaid(Date.valueOf(request.getParameter("datePaid")));
-                }
-                service.setIdServiceStatus(serviceStatusObj.find(
-                        Integer.parseInt(request.getParameter("serviceStatus"))));
-                serviceObj.edit(service);
-            }
-            if (request.getParameter("delete") != null) {
-                int deletedServiceID = Integer.parseInt(request.getParameter("delete"));
-                Service service = serviceObj.find(deletedServiceID);
-                serviceObj.remove(service);
+        PrintWriter out = response.getWriter();
 
-            }
-
-            //choose a client from combobox
-            out.println("<form action='admin-orders.jsp'>");
-            List<Client> clients = clientObj.findAll();
-            out.println("Select client:");
-            out.println("<select name='targetClientID'>");
-            out.println("<option value=0></option>");
-            for (Client c : clients) {
-                // out.println("targetClientID= "+targetClientID);    
-                out.println("<option value=" + c.getIdClient()
-                        + ((targetClientID == c.getIdClient()) ? " selected>" : ">")
-                        + c.getIdUser().getFirstname() + " "
-                        + c.getIdUser().getSurname() + "</option>");
-            }
-            out.println("</select>");
-            out.println("<button type='submit'>Submit</button>");
-            out.println("</form>");
-            //when a client is choosen, list services in his cart
-            if (targetClientID > 0) {
-                Client targetClient = clientObj.find(targetClientID);
-                ServiceRequest sr = serviceRequestObj.getCartByClient(targetClient);
-                Collection<Service> services = sr.getServiceCollection();
-                out.println("<form action='admin-orders.jsp'><table>");
-                out.println("<tr><th>Locality</th><th>Domain</th><th>Service</th><th>Status</th><th></th></tr>");
-                for (Service s : services) {
-                    out.println("<tr><td>" + s.getAddress() + "</td><td>"
-                            + s.getIdServiceDomain().getName() + "</td><td>"
-                            + s.getIdServiceType().getName() + "</td><td>"
-                            + s.getIdServiceStatus().getName() + "</td><td>"
-                            + "<button type='submit' name='editedServiceID' value='" + s.getIdService() + "'>View details</button>"
-                            + "</td></tr>");
-
-                    //if a service has been choosen, show form for editation
-                    if (editedServiceID == s.getIdService()) {
-                        //out.println("<table>");
-                        out.println("<tr><td></td><td>Locality:</td>"
-                                + "<td ><textarea name='serviceAddress'>"
-                                + s.getAddress() + "</textarea></td></tr>");
-                        out.println("<tr><td></td><td>Content:</td>"
-                                + "<td><textarea name='serviceContent'>"
-                                + s.getContent() + "</textarea></td><td></td>"
-                                + "<td><button type='Submit' name='update' value='"
-                                + s.getIdService() + "'>Change Record</button></td></tr>");
-                        out.println("<tr><td></td><td>Billed Amount:</td>"
-                                + "<td><input type='text' name='billedAmount' value='"
-                                + s.getBilledAmount() + "'></td><td></td>"
-                                + "<td><button type='submit' name='delete' value='"
-                                + s.getIdService() + "'>Delete Record</button></td></tr>");
-                        out.println("<tr><td></td><td>Date Paid:</td>"
-                                + "<td><input type='text' name='datePaid' value='"
-                                + s.getDatePaid() + "'></td></tr>");
-                        out.println("<tr><td></td><td>Service Status:</td><td>"
-                                + "<select name='serviceStatus'>");
-                        List<ServiceStatus> statuses = serviceStatusObj.findAll();
-                        for (ServiceStatus sts : statuses) {
-                            out.println("<option value='" + sts.getIdServiceStatus() + "' "
-                                    + ((editedServiceID == sts.getIdServiceStatus()) ? " selected>" : ">")
-                                    + sts.getName() + "</option>");
-                        }
-                        out.println("</select></td></tr>");
-                    }
-                }
-                out.println("</table></form>");
-            }
-            //out.println("</body>");
-            //out.println("</html>");
+        /*check, if a client has been already choosen or changed
+         *if yes, set his ID to session
+         */
+        int targetClientID = 0;
+        if (request.getParameter("targetClientID") != null) {
+            session.setAttribute("targetClientID", request.getParameter("targetClientID"));
         }
+        if (session.getAttribute("targetClientID") != null) {
+            targetClientID = Integer.parseInt((String) session.getAttribute("targetClientID"));
+        }
+        /*check, if a service is choosen for editation
+         */
+        int editedServiceID = 0;
+        if (request.getParameter("editedServiceID") != null) {
+            editedServiceID = Integer.parseInt(request.getParameter("editedServiceID"));
+        }
+        /*update record
+         */
+        if (request.getParameter("update") != null) {
+            int updatedServiceID = Integer.parseInt(request.getParameter("update"));
+            Service service = serviceObj.find(updatedServiceID);
+            service.setAddress(request.getParameter("serviceAddress"));
+            service.setContent(request.getParameter("serviceContent"));
+            service.setBilledAmount(Float.valueOf(request.getParameter("billedAmount").replace(',', '.')));
+            try {
+                service.setDatePaid(dateFormat.parse(request.getParameter("datePaid").replace(',', '.')));
+            } catch (ParseException ex) {
+                service.setDatePaid(null);
+            }
+            service.setIdServiceStatus(serviceStatusObj.find(
+                    Integer.parseInt(request.getParameter("serviceStatus"))));
+            serviceObj.edit(service);
+        }
+        /*delete record
+         */
+        if (request.getParameter("delete") != null) {
+            int deletedServiceID = Integer.parseInt(request.getParameter("delete"));
+            Service service = serviceObj.find(deletedServiceID);
+            serviceObj.remove(service);
+            //service = serviceObj.find(deletedServiceID);
+        }
+
+        /*Start printing GUI
+         *choose a client from combobox
+         */
+        out.println("<form action='admin-orders.jsp'>");
+        List<Client> clients = clientObj.findAll();
+        out.println("<h4 class=\"text-success\">Select client:<h4>");
+        out.println("<select class='form-control' name='targetClientID'>");
+        out.println("<option value=0></option>");
+        for (Client c : clients) {
+            // out.println("targetClientID= "+targetClientID);    
+            out.println("<option value=" + c.getIdClient()
+                    + ((targetClientID == c.getIdClient()) ? " selected>" : ">")
+                    + c.getIdUser().getFirstname() + " "
+                    + c.getIdUser().getSurname() + "</option>");
+        }
+        out.println("</select>");
+        out.println("<br><div class='col-md-4 col-md-offset-8'><button class='btn btn-success' type='submit' style='width: 30%'>Submit</button></div>");
+        out.println("</form>");
+
+        /*when a client is choosen, list services in his cart
+         */
+        if (targetClientID > 0) {
+            Client targetClient = clientObj.find(targetClientID);
+            ServiceRequest sr = serviceRequestObj.getCartByClient(targetClient);
+            Collection<Service> services = sr.getServiceCollection();
+            out.println("<br><hr><form action='admin-orders.jsp'>");
+            out.println("<table class='light admintable' style='width: 100%'>");
+            out.println("<tr class='text-warning'><th>Locality</th><th>Domain</th><th>Service</th><th>Status</th><th>Billed</th><th>Paid</th><th></th></tr>");
+
+            Float totalBilled = 0f;
+            Float totalPaid = 0f;
+            for (Service s : services) {
+                totalBilled += s.getBilledAmount();
+                if (!(s.getDatePaid() == null)) {
+                    totalPaid += s.getBilledAmount();
+                }
+                out.println("<tr><td class='smallfont'>" + s.getAddress() + "</td><td class='smallfont'>"
+                        + s.getIdServiceDomain().getName() + "</td><td class='smallfont'>"
+                        + s.getIdServiceType().getName() + "</td><td class='smallfont'>"
+                        + s.getIdServiceStatus().getName() + "</td><td class='smallfont'>"
+                        + s.getBilledAmount() + "</td><td class='smallfont'>");
+                String dateP;
+                try {
+                    dateP = dateFormatShort.format(s.getDatePaid());
+                } catch (Exception ex) {
+                    dateP = "";
+                }
+                out.println(dateP + "</td><td>"
+                        + "<button class='btn btn-default' type='submit' name='editedServiceID' value='"
+                        + s.getIdService() + "'>View details</button>"
+                        + "</td></tr>");
+
+                /*if a service has been choosen, show form for editation
+                 */
+                if (editedServiceID == s.getIdService()) {
+                    out.println("<tr><td class='smallfont' colspan='4'>&nbsp;</td></tr><tr><td></td><td class='text-warning smallfont'>Locality:</td>"
+                            + "<td class='smallfont' colspan='2'><textarea class='form-control' name='serviceAddress'>"
+                            + s.getAddress() + "</textarea></td></tr>");
+                    out.println("<tr><td class='smallfont'></td><td class='text-warning smallfont'>Content:</td>"
+                            + "<td class='smallfont' colspan='2'><textarea class='form-control' name='serviceContent'>"
+                            + s.getContent() + "</textarea></td>"
+                            + "<td><button class='btn btn-warning' type='Submit' name='update' value='"
+                            + s.getIdService() + "'>Change Record</button></td></tr>");
+                    out.println("<tr><td></td><td class='text-warning smallfont'>Billed Amount:</td>"
+                            + "<td class='smallfont' colspan='2'><input class='form-control' type='text' name='billedAmount' value='"
+                            + s.getBilledAmount() + "'></td>"
+                            + "<td><button class='btn btn-danger' type='submit' name='delete' value='"
+                            + s.getIdService() + "'>Delete Record</button></td></tr>");
+                    try {
+                        dateP = dateFormat.format(s.getDatePaid());
+                    } catch (Exception ex) {
+                        dateP = "";
+                    }
+                    out.println("<tr><td></td><td class='text-warning smallfont'>Date Paid:</td>"
+                            + "<td colspan='2'><input class='form-control' type='text' name='datePaid' value='"
+                            + dateP + "'></td></tr>");
+                    out.println("<tr><td></td><td class='text-warning smallfont'>Service Status:</td><td class='smallfont' colspan='2'>"
+                            + "<select class='form-control' name='serviceStatus'>");
+                    List<ServiceStatus> statuses = serviceStatusObj.findAll();
+                    for (ServiceStatus sts : statuses) {
+                        out.println("<option value='" + sts.getIdServiceStatus() + "' "
+                                + ((editedServiceID == sts.getIdServiceStatus()) ? " selected>" : ">")
+                                + sts.getName() + "</option>");
+                    }
+                    out.println("</select></td></tr><tr><td colspan='4'>&nbsp;</td><tr>");
+                }
+            }
+            out.println("</table><hr></form>");
+            out.println("<b class='text-warning'>TOTAL BILLED: " + totalBilled
+                    + ", TOTAL PAID: " + totalPaid
+                    + ", BALANCE (REST) = " + (totalBilled - totalPaid) + "</b><br>");
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

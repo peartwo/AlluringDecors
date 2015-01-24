@@ -31,10 +31,11 @@ public class ServiceRequestFacade extends AbstractFacade<ServiceRequest> {
         super(ServiceRequest.class);
     }
     
-    public ServiceRequest getCartByClient(Client client){
+    public ServiceRequest getCartByClient(Client client){       
+        //em.flush();
         List<ServiceRequest> requests = (List<ServiceRequest>) em.createNativeQuery(
                 "SELECT * FROM service_request WHERE id_client = ?", 
-                ServiceRequest.class).setParameter(1, client.getIdClient()).getResultList(); 
+                ServiceRequest.class).setParameter(1, client.getIdClient()).getResultList();
         if (!requests.isEmpty()) {           
             return requests.get(0);
         } else {

@@ -1,10 +1,10 @@
 <%-- 
-    Document   : client-orders
-    Created on : Jan 18, 2015, 10:51:15 PM
+    Document   : logout
+    Created on : Jan 24, 2015, 10:19:54 AM
     Author     : zuzanahruskova
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -35,33 +35,10 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     </head>
-
     <body>
-        <%
-            String name = session.getAttribute("name").toString();
-            if (session.getAttribute("userRole") != null) {
-                if (session.getAttribute("userRole").equals("client")) {
-        %>
-        <jsp:include page="/WEB-INF/jspf/clientnavigation.jspf"/>
-        <%
-            } else if (session.getAttribute("userRole").equals("admin")) {
-        %>
-        <jsp:include page="/WEB-INF/jspf/adminnavigation.jspf"/>
-        <%
-            }
-            } else {
-        %>
         <jsp:include page="/WEB-INF/jspf/defaultnavigation.jspf"/>
-        <%
-            }
-        %>
-
-        <div class="container" id="userRegistrationSection">
-            <div class="row">
-                <legend class="text-center header">Current Orders for <%=name%></legend>
-                <jsp:include page="/ManageOrdersForClient" flush="true"></jsp:include>
-            </div>
-        </div>
+        <h1 class="topMargin">Logout Success!</h1>
+        <h3>Thank you for using the Alluring Decors Website, ${name}.</h3>
+        <a href="index.jsp"><h3 class="text-warning">Return to Home page.</h3></a>
     </body>
 </html>
-

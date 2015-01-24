@@ -5,10 +5,12 @@
  */
 package session_beans;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import models.Service;
+import models.ServiceRequest;
 
 /**
  *
@@ -28,4 +30,8 @@ public class ServiceFacade extends AbstractFacade<Service> {
         super(Service.class);
     }
     
+    public List<Service> findByServiceRequestId(ServiceRequest sr) {
+        List<Service> services = (List<Service>) em.createNamedQuery("Service.findByIdServiceRequest", Service.class).setParameter("idServiceRequest", sr).getResultList();
+        return services;
+    }
 }

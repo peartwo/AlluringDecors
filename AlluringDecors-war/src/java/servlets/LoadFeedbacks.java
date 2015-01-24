@@ -50,7 +50,7 @@ public class LoadFeedbacks extends HttpServlet {
                 while (i.hasNext()) {
                     fb = (Feedback) i.next();
                     out.println("<div class=\"col-md-11 feedbackMsg\">");
-                    out.println("<h5>" + fb.getFirstname() + " (" + fb.getEmail() + ") wrote on: " + fb.getDateCreated() + "</h5>");
+                    out.println("<h5>" + fb.getFirstname() + " (<a class='text-success' href='mailto:" + fb.getEmail() + "'>" + fb.getEmail() + "</a>) wrote on: " + fb.getDateCreated() + "</h5>");
                     out.println("<p>" + fb.getContent() + "</p>");
                     out.println("<input type=\"checkbox\"/ name=\"read\"> Mark as read");
                     out.println("<input type=\"hidden\"/ name=\"idFeedback\" value=" + fb.getIdFeedback() + "\"/>");
