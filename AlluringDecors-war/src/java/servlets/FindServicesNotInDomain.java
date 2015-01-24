@@ -13,19 +13,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import models.ServiceDomain;
-import session_beans.ServiceDomainFacade;
+import models.ServiceType;
+import session_beans.ServiceTypeFacade;
 
 /**
  *
  * @author zuzanahruskova
  */
-public class DisplayDomains extends HttpServlet {
+public class FindServicesNotInDomain extends HttpServlet {
 
     @EJB
-    private ServiceDomainFacade domainObj;
-
+    private ServiceTypeFacade serviceTypeObj;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,31 +36,19 @@ public class DisplayDomains extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<ServiceDomain> domains = domainObj.findAll();
-        HttpSession session = request.getSession();
+        
+        int domainID = Integer.parseInt(request.getParameter("id"));
         response.setContentType("text/html;charset=UTF-8");
 
-        PrintWriter out = response.getWriter();
-        // If current user is admin display buttons to update or delete domain
-        if (session.getAttribute("userRole") == null) {
-            out.println("<h2><a class=\"text-danger\" href=\"registration.jsp\">Register here</a> to order services</h2>");
-        }
-        for (ServiceDomain sd : domains) {
-            out.println("<div class=\"col-md-6 domainbox\" id=" + sd.getIdServiceDomain() + " >");
-            // If current user is admin display buttons to update or delete domain
-            if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                out.println("<button type=\"submit\" class=\"btn btn-default pull-right edit\">Edit</button>"
-                        + "<button class=\"btn btn-danger pull-right delete\">Delete</button>");
+        List<ServiceType> noServices = serviceTypeObj.findServicesOutOfDomain(domainID);
+
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<select id='did' class='form-control' name='serviceName'>");
+            for (ServiceType st : noServices) {
+                out.println("<option value='" + st.getName() + "'>" + st.getName() + "</option>");
             }
-            out.println("<h3 id=\"name" + sd.getIdServiceDomain() + "\">" + sd.getName() + "</h3>");
-            out.println("<center><img src=\"images/domains/" + sd.getIdServiceDomain() + ".jpg\" alt=" + sd.getName() + " class=\"img-circle\" /></center>");
-            out.println("</div>");
-        }
-        // If current user is admin display a button to add new domain
-        if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-            out.println("<div id=\"newDomain\" class=\"col-md-6 newdomainbox\">");
-            out.println("<button id=\"addDomain\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Domain</span></button>");
-            out.println("</div>");
+            out.println("</select><br>");
+            out.println("<button id=" + domainID + " class=\"btn btn-success pull-right addexistingservice\">Add Service Type</button>");
         }
     }
 

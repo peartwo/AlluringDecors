@@ -76,6 +76,14 @@
         <servlet-name>ManageOrdersForClient</servlet-name>
         <servlet-class>servlets.ManageOrdersForClient</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FindServicesNotInDomain</servlet-name>
+        <servlet-class>servlets.FindServicesNotInDomain</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddServiceTypeToDomain</servlet-name>
+        <servlet-class>servlets.AddServiceTypeToDomain</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VerifyLogin</servlet-name>
         <url-pattern>/VerifyLogin</url-pattern>
@@ -151,6 +159,14 @@
     <servlet-mapping>
         <servlet-name>ManageOrdersForClient</servlet-name>
         <url-pattern>/ManageOrdersForClient</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindServicesNotInDomain</servlet-name>
+        <url-pattern>/FindServicesNotInDomain</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddServiceTypeToDomain</servlet-name>
+        <url-pattern>/AddServiceTypeToDomain</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

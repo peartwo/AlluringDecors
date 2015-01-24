@@ -57,12 +57,12 @@
 
         <div class="container" id="about">
             <div class="row">
-                <div class="col-md-10 col-md-offset-1 info">
+                <div class="col-md-8 col-md-offset-2 info">
                     <p>
-                        Some text about Alluring Decors. Some text about Alluring Decors.
-                        Some text about Alluring Decors. Some text about Alluring Decors.
-                        Some text about Alluring Decors. Some text about Alluring Decors.
-                        Some text about Alluring Decors. Some text about Alluring Decors.
+                        We are a young interior and exterior design company offering services.
+                        We currently deal with interior and exterior decoration of houses, offices, restaurants and halls.
+                        We offer fresh and modern services based on consultations with clients as we believe everyone should feel well in their environment.
+                        Please feel free to take a look at the <a href="services.jsp">services we offer</a>.
                     </p>
                 </div>
             </div>

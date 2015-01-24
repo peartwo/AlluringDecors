@@ -36,5 +36,15 @@ public class ServiceTypeFacade extends AbstractFacade<ServiceType> {
                 .setParameter(1, domainId).getResultList();
         
         return serviceTypes;
-    }  
+    }
+    
+    public List<ServiceType> findServicesOutOfDomain(int domainId) {
+        List<ServiceType> serviceTypes = (List<ServiceType>) em.createNativeQuery(
+                "SELECT * FROM service_type AS s LEFT JOIN "
+                +"(SELECT id_service_type FROM alluring_decors.r_service_domain_service_type "
+                +"WHERE id_service_domain = ?) AS d "
+                +"ON s.id_service_type = d.id_service_type WHERE d.id_service_type IS NULL", ServiceType.class)
+                .setParameter(1, domainId).getResultList();
+        return serviceTypes;
+    }
 }

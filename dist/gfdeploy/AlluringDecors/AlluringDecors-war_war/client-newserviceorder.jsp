@@ -60,7 +60,6 @@
                     <jsp:include page="/CreateServiceOrder" flush="true"></jsp:include>
                 </div>
             </div>
-            <div class="row responseText"></div>
         </div>
     </body>
 </html>

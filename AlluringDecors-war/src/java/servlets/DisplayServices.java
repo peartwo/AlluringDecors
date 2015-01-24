@@ -69,8 +69,8 @@ public class DisplayServices extends HttpServlet {
 
                 // If current user is admin display buttons to order, update or delete services
                 if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                    out.println("<button id=" + st.getIdServiceType() + "-update\" class=\"btn btn-default\"><span class=\"fa fa-edit\">Edit</span></button>"
-                            + "<button id=" + st.getIdServiceType() + "-delete\" class=\"btn btn-danger\"><span class=\"fa fa-minus-square\">Delete</span></button>");
+                    out.println("<button class=\"btn btn-default edit\"><span class=\"fa fa-edit\">Edit</span></button>"
+                            + "<button class=\"btn btn-danger delete\"><span class=\"fa fa-minus-square\">Delete</span></button>");
                 }
 
                 out.println("</div>");
@@ -78,8 +78,10 @@ public class DisplayServices extends HttpServlet {
 
             // If current user is admin display a button to add new service
             if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                out.println("<div id=\"newService\" class=\"col-md-3 yellowbox\">");
+                out.println("<div id=\"newService\" class=\"col-md-3 newyellowbox\">");
+                out.println("<input type='hidden' name='currentDomainID' value=" + id + ">");
                 out.println("<button id=\"addService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Service</span></button>");
+                out.println("<button id=\"createService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Create New Service</span></button>");
                 out.println("</div>");
             }
 
@@ -89,8 +91,10 @@ public class DisplayServices extends HttpServlet {
             out.println("<h3>There are no services at this time. </h3>");
             // If current user is admin display a button to add new service
             if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                out.println("<div id=\"newService\" class=\"col-md-3 yellowbox\">");
+                out.println("<div id=\"newService\" class=\"col-md-3 newyellowbox\">");
+                out.println("<input type='hidden' name='currentDomainID' value=" + id + ">");
                 out.println("<button id=\"addService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Service</span></button>");
+                out.println("<button id=\"createService\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Create New Service</span></button>");
                 out.println("</div>");
             }
             out.println("<a class=\"col-md-12 text-center\" href=\"services.jsp\">"

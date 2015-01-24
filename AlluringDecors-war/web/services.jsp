@@ -4,6 +4,8 @@
     Author     : zuzanahruskova
 --%>
 
+<%@page import="models.ServiceType"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -41,7 +43,7 @@
                     this.reset();
                 });
             };
-            // Display services under domain when domainbox clicked
+            /* ---- Display services under domain when domainbox clicked ---- */
             $(document).on('click', ".domainbox", function (event) {
                 event.preventDefault();
                 var id = $(this).attr("id");
@@ -56,6 +58,7 @@
                     }
                 });
             });
+            /*  ----- Service domain creation -----  */
             // Display form to add new domain when Add New Domain button clicked
             $(document).on('click', "#addDomain", function () {
                 $("#newDomain").html("<form id='newDomainForm' class='form-horizontal' action='AddNewDomain' method='post' enctype='multipart/form-data'>\n\
@@ -81,11 +84,6 @@
                     </fieldset>\n\
                 </form>");
             });
-            // Hide form to add new domain when Cancel clicked
-            $(document).on("click", ".cancel", function (e) {
-                e.preventDefault();
-                $("#newDomain").html("<button id=\"addDomain\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Domain</span></button>");
-            });
             // Add new domain when Add Domain clicked
             $(document).on("submit", "#newDomainForm", function (e) {
                 var formObj = $(this);
@@ -101,10 +99,8 @@
                     processData: false,
                     success: function (result)
                     {
-                        //$(result).insertAfter($(".domainbox").last());
                         $(".domainbox").last().after(result);
                         formObj.reset();
-                        //location.reload(true);
                     },
                     error: function (errorThrown)
                     {
@@ -114,6 +110,106 @@
                 e.preventDefault();
                 e.unbind();
             });
+            
+            // Hide form to add new domain/service type when Cancel clicked
+            $(document).on("click", ".cancel", function (e) {
+                e.preventDefault();
+                $("#newDomain").html("<button id=\"addDomain\" class=\"btn btn-large btn-success\"><span class=\"fa fa-plus-square\">Add New Domain</span></button>");
+            });
+            
+            /*  ----- Service type creation -----  */
+            // Display form to create new service type when Create Service Type button clicked
+            $(document).on('click', "#createService", function () {
+                //alert($(".newyellowbox input[type='hidden'][name='currentDomainID']").val());
+                var id = $(".newyellowbox input[name='currentDomainID']").val();
+                $("#newService").html("<form id='newServiceForm' class='form-horizontal' action='AddNewServiceType' method='post' enctype='multipart/form-data'>\n\
+                    <fieldset>\n\
+                        <h3>New Service Type</h3>\n\
+                        <div class='form-group'>\n\
+                            <div class='col-md-12'>\n\
+                                New Service Type Name<input name='name' type='text' placeholder='Name Here' class='form-control'>\n\
+                            </div>\n\
+                        </div>\n\
+                        <div class='form-group'>\n\
+                        <input name='currentDomainID' type='hidden' value=" + id + ">\n\
+                        </div>\n\
+                        <div class='form-group'>\n\
+                            <div class='col-md-12'>\n\
+                                New Service Type Title Image<input type='file' name='file' id='file' class='form-control'>\n\
+                                <br><p>Image must be in .jpg format and have dimensions 100px x 100px</p>\n\
+                            </div>\n\
+                        </div>\n\
+                        <div class='form-group'>\n\
+                            <div class='col-md-12'>\n\
+                                <button type='submit' class='btn btn-warning btn-lg'>Create Service Type</button>\n\
+                                <button class='btn btn-danger btn-lg cancel'>Cancel</button>\n\
+                            </div>\n\
+                        </div>\n\
+                    </fieldset>\n\
+                </form>");
+            });
+            // Display form to add existing service type when Add Service Type button clicked
+            $(document).on('click', "#addService", function (event) {
+                event.preventDefault();
+                var id = $(".newyellowbox input[name='currentDomainID']").val();
+                $.ajax({
+                    url: "FindServicesNotInDomain",
+                    data: {"id": id},
+                    success: function (result) {
+                        $("#newService").html(result);
+                    },
+                    error: function () {
+                        alert("Error loading the page.");
+                    }
+                });
+            });
+            // Add new service type when Create Service Type clicked
+            $(document).on("submit", "#newServiceForm", function (e) {
+                alert($(this).serialize());
+                var formObj = $(this);
+                var formURL = formObj.attr("action");
+                var formData = new FormData(this);
+                $.ajax({
+                    type: "POST",
+                    url: formURL,
+                    data: formData,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (result)
+                    {
+                        $(".yellowbox").last().after(result);
+                        formObj.reset();
+                    },
+                    error: function (errorThrown)
+                    {
+                        alert("Error Thrown");
+                    }
+                });
+                e.preventDefault();
+                e.unbind();
+            });
+            
+            // Add existing service type when Add Service Type button clicked
+            $(document).on("click", ".addexistingservice", function (e) {
+                e.preventDefault();
+                var domainId = $(this).attr("id");
+                var name = $("#did").val();
+                //alert(domainId + " / " + name);
+                $.ajax({
+                    url: "AddServiceTypeToDomain",
+                    data: {"domainId": domainId, "name": name},
+                    success: function (result) {
+                        $("#newService").html(result);
+                    },
+                    error: function () {
+                        alert("Error loading the page.");
+                    }
+                });
+                $(this).reset();
+            });
+            
             // create form for editing domain when Edit button clicked
             $(document).on("click", ".edit", function () {
                 var id = $(this).parent().attr("id");

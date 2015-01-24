@@ -106,7 +106,8 @@ h1,h2,h3 {
 .redbox:hover	{
     color: white;
 }
-.yellowbox {
+.yellowbox,
+.newyellowbox {
     padding: 10px;
     color: #3d2e00;
     background-color: #cc9900;

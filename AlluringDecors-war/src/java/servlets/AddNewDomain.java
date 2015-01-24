@@ -53,7 +53,7 @@ public class AddNewDomain extends HttpServlet {
         
         boolean imgUploaded = false;
         String domainName = request.getParameter("name");
-        System.out.println(domainName);
+        //System.out.println(domainName);
         ServiceDomain sd = new ServiceDomain();
         sd.setIdServiceDomain(1);
         sd.setName(domainName);
@@ -101,7 +101,7 @@ public class AddNewDomain extends HttpServlet {
                 out.println("<button class=\"btn btn-danger pull-right delete\">Delete</button>");
                 out.println("<h3>" + sd.getName() + "</h3>");
                 out.println("<center><img src=\"images/domains/" + domainId + ".jpg\" alt=\"" + sd.getName() + "\" class=\"img-circle\" /></center>");
-                System.out.println("<center><img src=\"images/domains/" + domainId + ".jpg\" alt=\"" + sd.getName() + "\" class=\"img-circle\" /></center>");
+                //System.out.println("<center><img src=\"images/domains/" + domainId + ".jpg\" alt=\"" + sd.getName() + "\" class=\"img-circle\" /></center>");
                 out.println("</div>");
             }
         }

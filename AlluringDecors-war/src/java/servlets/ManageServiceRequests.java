@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -125,8 +124,10 @@ public class ManageServiceRequests extends HttpServlet {
          */
         if (targetClientID > 0) {
             Client targetClient = clientObj.find(targetClientID);
+            //ServiceRequest sr = serviceRequestObj.getCartByClient(targetClient);
+            //Collection<Service> services = sr.getServiceCollection();
             ServiceRequest sr = serviceRequestObj.getCartByClient(targetClient);
-            Collection<Service> services = sr.getServiceCollection();
+            List<Service> services = serviceObj.findByServiceRequestId(sr);
             out.println("<br><hr><form action='admin-orders.jsp'>");
             out.println("<table class='light admintable' style='width: 100%'>");
             out.println("<tr class='text-warning'><th>Locality</th><th>Domain</th><th>Service</th><th>Status</th><th>Billed</th><th>Paid</th><th></th></tr>");

@@ -8,7 +8,6 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import models.Client;
 import models.Service;
 import models.ServiceRequest;
-import models.ServiceStatus;
 import models.User;
 import session_beans.ClientFacade;
 import session_beans.ServiceFacade;
@@ -87,9 +85,8 @@ public class ManageOrdersForClient extends HttpServlet {
             serviceObj.remove(service);
             //service = serviceObj.find(deletedServiceID);
         }
-        //Client targetClient = clientObj.find(targetClientID);
         //ServiceRequest sr = serviceRequestObj.getCartByClient(targetClient);
-        //Collection<Service> services = sr.getServiceCollection(); // ********* Editovat tu
+        //Collection<Service> services = sr.getServiceCollection();
         User user = userObj.find(userId);
         Client client = clientObj.findByUserId(user);
         ServiceRequest sr = serviceRequestObj.getCartByClient(client);
