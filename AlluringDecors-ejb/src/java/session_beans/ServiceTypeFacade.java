@@ -47,4 +47,9 @@ public class ServiceTypeFacade extends AbstractFacade<ServiceType> {
                 .setParameter(1, domainId).getResultList();
         return serviceTypes;
     }
+    
+    public ServiceType findServiceTypeByName(String name) {
+        List<ServiceType> types = (List<ServiceType>) em.createNamedQuery("ServiceType.findByName", ServiceType.class).setParameter("name", name).getResultList();
+        return types.isEmpty() ? null : types.get(0);
+    }
 }

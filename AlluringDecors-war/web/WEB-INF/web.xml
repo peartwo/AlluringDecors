@@ -84,6 +84,18 @@
         <servlet-name>AddServiceTypeToDomain</servlet-name>
         <servlet-class>servlets.AddServiceTypeToDomain</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageProjects</servlet-name>
+        <servlet-class>servlets.ManageProjects</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageServiceTypes</servlet-name>
+        <servlet-class>servlets.ManageServiceTypes</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveServTypeFromDomain</servlet-name>
+        <servlet-class>servlets.RemoveServTypeFromDomain</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VerifyLogin</servlet-name>
         <url-pattern>/VerifyLogin</url-pattern>
@@ -167,6 +179,18 @@
     <servlet-mapping>
         <servlet-name>AddServiceTypeToDomain</servlet-name>
         <url-pattern>/AddServiceTypeToDomain</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageProjects</servlet-name>
+        <url-pattern>/ManageProjects</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageServiceTypes</servlet-name>
+        <url-pattern>/ManageServiceTypes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveServTypeFromDomain</servlet-name>
+        <url-pattern>/RemoveServTypeFromDomain</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

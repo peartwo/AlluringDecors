@@ -36,6 +36,7 @@ h1,h2,h3 {
 }
 .responseText {
     padding-bottom: 10px;
+    color: #4a4a4a;
     background-color: silver;
     border-radius: 10px;
 }
@@ -107,7 +108,8 @@ h1,h2,h3 {
     color: white;
 }
 .yellowbox,
-.newyellowbox {
+.newyellowbox,
+.yellowformbox {
     padding: 10px;
     color: #3d2e00;
     background-color: #cc9900;
@@ -121,7 +123,8 @@ h1,h2,h3 {
     height: 50px;
 }
 #addService,
-#addDomain {
+#addDomain,
+#createService {
     width: 100%;
 }
 .greybox {

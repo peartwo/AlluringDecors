@@ -7,6 +7,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,12 +23,12 @@ import session_beans.ServiceTypeFacade;
  * @author zuzanahruskova
  */
 public class AddServiceTypeToDomain extends HttpServlet {
-    
+
     @EJB
     private ServiceDomainFacade serviceDomainObj;
     @EJB
     private ServiceTypeFacade serviceTypeObj;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,21 +41,31 @@ public class AddServiceTypeToDomain extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int domainId = Integer.parseInt(request.getParameter("domainId"));
+        String name = request.getParameter("name");
         ServiceDomain sd = serviceDomainObj.find(domainId);
-        ServiceType st;
-        
+        ServiceType st = serviceTypeObj.findServiceTypeByName(name);
+
+        Collection<ServiceType> services = sd.getServiceTypeCollection();
+        for (ServiceType service : services) {
+            System.out.println(service.getName());
+        }
+        services.add(st);
+        sd.setServiceTypeCollection(services);
+        for (ServiceType serv : sd.getServiceTypeCollection()) {
+            System.out.println(serv.getName());
+        }
+        serviceDomainObj.edit(sd);
+
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddServiceTypeToDomain</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddServiceTypeToDomain at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            out.println("<div class=\"col-md-3 yellowbox\" id=" + st.getIdServiceType() + ">");
+            out.println("<h3>" + st.getName() + "</h3>");
+            out.println("<center><img src=\"images/domains/" + st.getIdServiceType() + "-2.jpg\" alt=\"" + st.getName() + "\" class=\"img-circle\" /></center>");
+            out.println("<button class=\"btn btn-default editst\"><span class=\"fa fa-edit\">Edit</span></button>");
+            out.println("<button class=\"btn btn-danger deletest\"><span class=\"fa fa-minus-square\">Delete</span></button>");
+            out.println("<button id='" + domainId + "' class=\"btn btn-default removest\"><span class=\"fa fa-minus-square\">Remove from Domain</span></button>");
+            //System.out.println("<center><img src=\"images/domains/" + domainId + ".jpg\" alt=\"" + sd.getName() + "\" class=\"img-circle\" /></center>");
+            out.println("</div>");
         }
     }
 

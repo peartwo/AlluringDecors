@@ -56,23 +56,7 @@
 
         <div class="container" id="projects">
             <div class="row">
-                <h1 class="topMargin">&nbsp;</h1>
-                <a href="">
-                    <div class="col-md-4 redbox">
-                        <h2><span class="glyphicon glyphicon-hand-up"></span>&nbsp; Upcoming Projects</h2>
-
-                    </div>
-                </a>
-                <a href="">
-                    <div class="col-md-4 redbox">
-                        <h2><span class="glyphicon glyphicon-hand-right"></span>&nbsp; Ongoing Projects</h2>
-                    </div>
-                </a>
-                <a href="">
-                    <div class="col-md-4 redbox">
-                        <h2><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; Accomplished Projects</h2>
-                    </div>
-                </a>
+                <jsp:include page="/ManageProjects" flush="true" />
             </div>
         </div>
     </body>

@@ -201,7 +201,8 @@
                     url: "AddServiceTypeToDomain",
                     data: {"domainId": domainId, "name": name},
                     success: function (result) {
-                        $("#newService").html(result);
+                        $(".yellowbox").last().after(result);
+                        formObj.reset();
                     },
                     error: function () {
                         alert("Error loading the page.");
@@ -209,7 +210,7 @@
                 });
                 $(this).reset();
             });
-            
+            /*  ----- Service domain update -----  */
             // create form for editing domain when Edit button clicked
             $(document).on("click", ".edit", function () {
                 var id = $(this).parent().attr("id");
@@ -250,6 +251,49 @@
                 e.preventDefault();
                 e.unbind();
             });
+            /*  ----- Service type update -----  */
+            // create form for editing service type when Edit button clicked
+            $(document).on("click", ".editst", function () {
+                var id = $(this).parent().attr("id");
+                $(this).text("Apply Change");
+                $(this).removeClass("editst");
+                $(this).parent().removeClass("yellowbox");
+                $(this).parent().addClass("yellowformbox");
+                var html = $(this).parent().html();
+                $(this).parent().html("<form id='editServiceTypeForm' action='ManageServiceTypes' method='post' enctype='multipart/form-data'>\n\
+                            <input type='hidden' name='action' value='update'><input type='hidden' name='id' value='" + id + "'>" + html + "</form>");
+                $("#name" + id).html("<div class='col-md-8 form-group has-warning'><input type='text' name=\"name\" class='form-control' value='" + $("#name" + id).text() + "'></div>");
+                //$("#" + id + " img").css("width", "65%");
+                $("#" + id + " center").append("<input type='file' name='file' id='file' class='form-control'>If need to change title image, please uppload new image here.");
+                preventDefault();
+            });
+            // update service type via Ajax when Apply change button clicked
+            $(document).on("submit", "#editServiceTypeForm", function (e) {
+                var formObj = $(this);
+                var formURL = formObj.attr("action");
+                var formData = new FormData(this);
+                $.ajax({
+                    type: "POST",
+                    url: formURL,
+                    data: formData,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (result)
+                    {
+                        $(".yellowformbox").html(result);
+                    },
+                    error: function (errorThrown)
+                    {
+                        alert(errorThrown);
+                    }
+                });
+                e.preventDefault();
+                e.unbind();
+            });
+            
+            /*  ----- Service domain delete -----  */
             // Delete domain via Ajax when Delete button clicked
             $(document).on("click", ".delete", function () {
                 var id = $(this).parent().attr("id");
@@ -269,6 +313,46 @@
                     });
                 }
                 return false;
+            });
+            /*  ----- Service type delete/remove -----  */
+            // Delete service type via Ajax when Delete button clicked
+            $(document).on("click", ".deletest", function () {
+                var id = $(this).parent().attr("id");
+                if (confirm("Are you sure you want to delete this service and its title image from all domains?")) {
+                    $.ajax({
+                        url: "ManageServiceTypes",
+                        data: {
+                            "id": id,
+                            "action": "delete"
+                        },
+                        success: function (result) {
+                            $("#" + id).html(result);
+                        },
+                        error: function () {
+                            $("#" + id).html("<h3>Error deleting the Service type.<h3>");
+                        }
+                    });
+                }
+                return false;
+            });
+            // Remove existing service type when Remove button clicked
+            $(document).on("click", ".removest", function (e) {
+                e.preventDefault();
+                var domainId = $(this).attr("id");
+                var typeId = $(this).parent().attr("id");
+                //alert(domainId + " / " + typeId);
+                $.ajax({
+                    url: "RemoveServTypeFromDomain",
+                    data: {"domainId": domainId, "typeId": typeId},
+                    success: function (result) {
+                        $("#" + typeId).html(result);
+                        formObj.reset();
+                    },
+                    error: function () {
+                        alert("Error loading the page.");
+                    }
+                });
+                $(this).reset();
             });
         </script>
     </head>

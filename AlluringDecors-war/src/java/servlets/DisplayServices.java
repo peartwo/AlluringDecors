@@ -54,9 +54,9 @@ public class DisplayServices extends HttpServlet {
             ServiceType st;
             while (i.hasNext()) {
                 st = (ServiceType) i.next();
-                out.println("<div class=\"col-md-3 yellowbox\">");
+                out.println("<div class=\"col-md-3 yellowbox\" id=" + st.getIdServiceType() + ">");
                 out.println("<img src=\"images/services/" + st.getIdServiceType() + "-2.jpg\" alt=" + st.getName() + " class=\"img-circle center-block\" />");
-                out.println("<h3>" + st.getName() + "</h3>");
+                out.println("<h3 id='name" + st.getIdServiceType() + "'>" + st.getName() + "</h3>");
 
                 // If current user is client display a button to order services
                 if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("client"))) {
@@ -69,8 +69,9 @@ public class DisplayServices extends HttpServlet {
 
                 // If current user is admin display buttons to order, update or delete services
                 if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                    out.println("<button class=\"btn btn-default edit\"><span class=\"fa fa-edit\">Edit</span></button>"
-                            + "<button class=\"btn btn-danger delete\"><span class=\"fa fa-minus-square\">Delete</span></button>");
+                    out.println("<button class=\"btn btn-default editst\"><span class=\"fa fa-edit\">Edit</span></button>");
+                    out.println("<button class=\"btn btn-danger deletest\"><span class=\"fa fa-minus-square\">Delete</span></button>");
+                    out.println("<button id='" + id + "' class=\"btn btn-custom removest\"><span class=\"fa fa-remove\">Remove</span></button>");
                 }
 
                 out.println("</div>");

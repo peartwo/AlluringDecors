@@ -34,4 +34,11 @@ public class ServiceFacade extends AbstractFacade<Service> {
         List<Service> services = (List<Service>) em.createNamedQuery("Service.findByIdServiceRequest", Service.class).setParameter("idServiceRequest", sr).getResultList();
         return services;
     }
+    
+    public List<Service> findServicesByStatusID(int id) {
+    List<Service> services = (List<Service>) em.createNativeQuery(
+            "SELECT * FROM service WHERE id_service_type = ?", 
+            Service.class).setParameter(1, id).getResultList();
+    return services;
+    }
 }

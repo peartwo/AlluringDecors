@@ -29,7 +29,7 @@ import session_beans.ServiceDomainFacade;
  *
  * @author zuzanahruskova
  */
-@WebServlet(name = "AddNewDomain", urlPatterns = {"/AddNewDomain"})
+@WebServlet(name = "ManageDomains", urlPatterns = {"/ManageDomains"})
 @MultipartConfig
 public class ManageDomains extends HttpServlet {
 

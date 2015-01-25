@@ -112,7 +112,7 @@ public class AddNewServiceType extends HttpServlet {
         
         try (PrintWriter out = response.getWriter()) {
             if (imgUploaded == true) {
-                out.println("<div class=\"col-md-6 yellowbox\" id=" + servTypeId + " >");
+                out.println("<div class=\"col-md-3 yellowbox\" id=" + servTypeId + " >");
                 out.println("<button type=\"submit\" class=\"btn btn-default pull-right edit\">Edit</button>");
                 out.println("<button class=\"btn btn-danger pull-right delete\">Delete</button>");
                 out.println("<h3>" + st.getName() + "</h3>");
