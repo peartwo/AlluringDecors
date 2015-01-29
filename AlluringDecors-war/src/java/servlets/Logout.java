@@ -39,7 +39,7 @@ public class Logout extends HttpServlet {
             session = request.getSession();
             String name = session.getAttribute("name").toString();
             System.out.println(name);
-            session.invalidate();
+                session.invalidate();
             RequestDispatcher rd = request.getRequestDispatcher("logout.jsp");
             request.setAttribute("name", name);
             response.setHeader("Cache-Control", "no-cache");

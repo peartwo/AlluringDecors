@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -45,34 +47,61 @@ public class ManageProjects extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        HashMap<String, String> req = new HashMap<>();
+        Enumeration er = request.getParameterNames();
+        while (er.hasMoreElements()) {
+            String key = (String) er.nextElement();
+            req.put(key, (String) request.getParameter(key));
+        }
+
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        // if a new project added by admin, create new project
-        if (request.getParameter("projectName") != null) {
-            Project newProject = new Project();
-            newProject.setIdProject(1);
-            newProject.setIdService(serviceObj.find(Integer.parseInt(request.getParameter("addedService"))));
-            newProject.setName(request.getParameter("projectName"));
-            newProject.setDescription(request.getParameter("projectDescription"));
-            out.println();
-            try {
-                newProject.setDateStart(dateFormat.parse(request.getParameter("projectStart").replace(',', '.')));
-            } catch (ParseException ex) {
-                newProject.setDateStart(null);
-            }
-            try {
-                newProject.setDateEnd(dateFormat.parse(request.getParameter("projectEnd").replace(',', '.')));
-            } catch (ParseException ex) {
-                newProject.setDateEnd(null);
-            }
-            out.println();
-            projectObj.create(newProject);
-            out.println();
+        /* Handle request parameters create/edit/delete project
+         * and prepare data for form filling 
+         */
+        Project project;
+        if (!req.containsKey("job")) {
+            req.put("job", "display");
+        }
+        Boolean readyToSave;
+        ProjectFormData pfd;
+        switch (req.get("job")) {
+            case "new":
+                project = new Project();
+                pfd = new ProjectFormData(req);
+                readyToSave = pfd.setProjectValues(project);
+                if (readyToSave) {
+                    projectObj.create(project);
+                }
+                pfd = new ProjectFormData();
+                break;
+            case "edit":
+                project = projectObj.find(Integer.parseInt(req.get("selectedProject")));
+                pfd = new ProjectFormData(req);
+                readyToSave = pfd.setProjectValues(project);
+                if (readyToSave) {
+                    projectObj.edit(project);
+                }
+                break;
+            case "delete":
+                project = projectObj.find(Integer.parseInt(req.get("selectedProject")));
+                projectObj.remove(project);
+                req.remove("selectedProject");
+                pfd = new ProjectFormData();
+                break;
+            case "select":
+                project = projectObj.find(Integer.parseInt(req.get("selectedProject")));
+                pfd = new ProjectFormData(project);
+                break;
+            default:
+                pfd = new ProjectFormData();
+                req.remove("selectedProject");
+                break;
         }
 
-        //out.println("<form action='projects.jsp'>");
+        out.println("<form action='projects.jsp' method='POST'>");
+        out.println("<input type='hidden' name='job' value='select'>");
         List<Project> allProjects = projectObj.findAll();
 
         out.println("<div class='col-md-4 redbox'><h2><span class='glyphicon glyphicon-hand-up'></span>&nbsp; Upcoming Projects</h2>");
@@ -82,10 +111,10 @@ public class ManageProjects extends HttpServlet {
                 out.println("<img src=\"images/projects/" + p.getIdProject() + ".jpg\" alt=" + p.getName() + " style='width:100%;border:1px solid red; margin-top: 10px; margin-bottom: 10px'/>");
                 out.println("<p><strong class='text-danger'>Name: </strong>" + p.getName() + "</p>");
                 out.println("<p><strong class='text-danger'>Description: </strong>" + p.getDescription() + "</p>");
-                // If current user is admin allow editing
+                // If current user is admin display button
                 if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                    out.println("<button class='btn btn-warning' type='submit' name='selectedProject' value="
-                            + p.getIdProject() + ">Edit </button><br>");
+                    out.println("<button type='submit' class='btn btn-danger' name='selectedProject' value="
+                            + p.getIdProject() + ">Select this project</button><br>");
                 }
                 out.println("</div>");
             }
@@ -99,10 +128,10 @@ public class ManageProjects extends HttpServlet {
                 out.println("<p><strong class='text-danger'>Name: </strong>" + p.getName() + "</p>");
                 out.println("<p><strong class='text-danger'>Started: </strong>" + p.getDateStart() + "</p>");
                 out.println("<p><strong class='text-danger'>Description: </strong>" + p.getDescription() + "</p>");
-                // If current user is admin allow editing
+                // If current user is admin display button
                 if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                    out.println("<button class='btn btn-warning' type='submit' name='selectedProject' value="
-                            + p.getIdProject() + ">Edit </button><br>");
+                    out.println("<button type='submit' class='btn btn-danger' name='selectedProject' value="
+                            + p.getIdProject() + ">Select this project</button><br>");
                 }
                 out.println("</div>");
             }
@@ -117,40 +146,50 @@ public class ManageProjects extends HttpServlet {
                 out.println("<p><strong class='text-danger'>Started: </strong>" + p.getDateStart() + "</p>");
                 out.println("<p><strong class='text-danger'>Finished: </strong>" + p.getDateEnd() + "</p>");
                 out.println("<p><strong class='text-danger'>Description: </strong>" + p.getDescription() + "</p>");
-                // If current user is admin allow editing
+                // If current user is admin display button
                 if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
-                    out.println("<button class='btn btn-warning' type='submit' name='selectedProject' value="
-                            + p.getIdProject() + ">Edit </button><br>");
+                    out.println("<button type='submit' class='btn btn-danger' name='selectedProject' value="
+                            + p.getIdProject() + ">Select this project</button><br>");
                 }
                 out.println("</div>");
             }
         }
         out.println("</div>");
-        //out.println("</form><br><br>");
+        out.println("</form>");
 
         // If current user is admin display form to add new project
         if ((session.getAttribute("userRole") != null) && (session.getAttribute("userRole").equals("admin"))) {
+            out.println("<form action='projects.jsp' method='POST'>");
             out.println("<div class='row'>");
             out.println("<div id='projectform' class='col-md-4 col-md-offset-4'>");
-            out.println("<legend class='text-center header'>New Project</legend>");
+            out.println("<legend class='text-center header'>Manage Project</legend>");
             out.println("<form class='form-horizontal' action='projects.jsp' method='POST'>");
-            out.println("<input type='text' name='projectName' placeholder='Project Name' class='form-control'><br>");
+            out.println("<input type='text' name='projectName' placeholder='Project Name' value='" + pfd.pName + "' class='form-control'><br>");
             //choose from available services (having status "Accepted" or "Paiment received")
             out.println("<span class='text-warning'>Choose service to project: </span><select name='addedService' class='form-control'>");
             for (int i = 3; i < 5; i++) {
                 List<Service> services = serviceObj.findServicesByStatusID(i);
                 for (Service s : services) {
-                    out.println("<option value='" + s.getIdService() + "'>"
+                    out.println("<option value='" + s.getIdService()
+                            + ((s.getIdService() == pfd.pServiceID) ? "' selected>" : "'>")
                             + s.getAddress() + " / " + s.getIdServiceType().getName() + "</option>");
                 }
             }
             out.println("</select>");
-            out.println("<textarea name='projectDescription' placeholder='Project Decsription' class='form-control'></textarea><br>");
-            out.println("<input type='date' name='projectStart' placeholder='Start Date' class='form-control'>");
-            out.println("<input type='date' name='projectEnd' placeholder='End Date' class='form-control'>");
-            out.println("<button type='submit' class='btn btn-warning'>Add Project</button></form>");
+            out.println("<textarea name='projectDescription' placeholder='Project Decsription' class='form-control'>" + pfd.pDescription + "</textarea><br>");
+            out.println("<input type='text' name='projectStart' placeholder='Start Date' value='" + pfd.pStart + "' class='form-control'>");
+            out.println("<input type='text' name='projectEnd' placeholder='End Date' value='" + pfd.pEnd + "' class='form-control'><br>");
+            if (req.containsKey("selectedProject")) {
+                out.println("<input type='hidden' name='selectedProject' value='" + req.get("selectedProject") + "'>");
+                out.println("<button class='btn btn-warning' name='job' value='edit' type='submit'>Save Changes</button>");
+                out.println("<button class='btn btn-danger' name='job' value='delete' type='submit'>Delete Project</button>");
+            } else {
+                out.println("<button class='btn btn-success' name='job' value='new' type='submit'>Add new Project</button>");
+            }
+            out.println("<button class='btn btn-custom' name='job' value='display' type='submit'>Cancel</button>");
             out.println("</div>");
             out.println("</div>");
+            out.println("</form>");
         }
     }
 
@@ -193,4 +232,72 @@ public class ManageProjects extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    class ProjectFormData {
+
+        String pName;
+        String pNameErr = "";
+        int pServiceID;
+        String pServiceIDErr = "";
+        String pDescription;
+        String pStart;
+        String pEnd;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+        public ProjectFormData() {
+            this.pName = "";
+            this.pDescription = "";
+            this.pStart = "";
+            this.pEnd = "";
+        }
+
+        public ProjectFormData(Project project) {
+            this.pName = project.getName();
+            this.pServiceID = project.getIdService().getIdService();
+            this.pDescription = project.getDescription();
+            this.pStart = (project.getDateStart() == null) ? "" : dateFormat.format(project.getDateStart());
+            this.pEnd = (project.getDateEnd() == null) ? "" : dateFormat.format(project.getDateEnd());
+        }
+
+        public ProjectFormData(HashMap<String, String> req) {
+            //this.pName = req.getOrDefault("projectName", "");
+            this.pName = req.containsKey("projectName") ? req.get("projectName") : "";
+            if (pName.length() < 1) {
+                pNameErr = "<font color='red'>Project name is Mandatory!></font><br>";
+            }
+            //this.pServiceID = Integer.parseInt(req.getOrDefault("addedService", "0"));
+            this.pServiceID = Integer.parseInt(req.containsKey("addedService") ? req.get("addedService") : "0");
+            if (pServiceID == 0) {
+                pServiceIDErr = "<font color='red'>Project name is Mandatory!></font><br>";
+            }
+            //this.pDescription = req.getOrDefault("projectDescription", "");
+            this.pDescription = req.containsKey("projectDescription") ? req.get("projectDescription") : "";
+            //this.pStart = req.getOrDefault("projectStart", "");
+            this.pStart = req.containsKey("projectStart") ? req.get("projectStart") : "";
+            //this.pEnd = req.getOrDefault("projectEnd", "");
+            this.pEnd = req.containsKey("projectEnd") ? req.get("projectEnd") : "";
+        }
+
+        public Boolean setProjectValues(Project project) {
+            if (pName.length() < 1) {
+                return false;
+            }
+            if (pServiceID == 0) {
+                return false;
+            }
+            project.setName(pName);
+            project.setIdService(serviceObj.find(pServiceID));
+            project.setDescription(pDescription);
+            try {
+                project.setDateStart(dateFormat.parse(pStart));
+            } catch (ParseException ex) {
+                project.setDateStart(null);
+            }
+            try {
+                project.setDateEnd(dateFormat.parse(pEnd));
+            } catch (ParseException ex) {
+                project.setDateEnd(null);
+            }
+            return true;
+        }
+    }
 }
